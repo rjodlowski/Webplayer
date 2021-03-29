@@ -19,7 +19,6 @@
     </div>
     <div id="playerDiv">
       <player></player>
-      {{ getCurrAlbumName }}
     </div>
   </div>
 </template>

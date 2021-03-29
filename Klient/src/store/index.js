@@ -23,15 +23,14 @@ const getters = {
 const mutations = {
 	STORE_DATA_FROM_SERV(state, newData) {
 		state.dataFromServ = newData
-		console.log(newData.albums);
+		// console.log(newData.albums);
 		state.currAlbum = newData.albums[0]
-		console.log(state.currAlbum);
+		// console.log(state.currAlbum);
 		console.log("First fetch result object: ", state.dataFromServ);
 	},
 	CHANGE_FILES(state, newData) {
 		state.dataFromServ.files = newData.files;
-		console.log(state.currAlbum);
-
+		// console.log(state.currAlbum);
 		console.log("Podmieniono piosenki", state.dataFromServ);
 	}
 }

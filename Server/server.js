@@ -17,13 +17,13 @@ const server = http.createServer(function (req, res) {
 	switch (req.method) {
 		case "GET":
 			if (req.url == "/") {
-				console.log(req.url);
+				// console.log(req.url);
 			} else if (req.url.startsWith("/albums/")) {
 				if (req.url.endsWith(".jpg")) {
 					var path = decodeURIComponent(req.url)
 					fs.readFile("./static" + path, function (error, data) {
 						if (error) {
-							console.log(error);
+							return console.log(error);
 						} else {
 							res.writeHead(200, { "Content-Type": 'image/jpeg; charset=utf-8' });
 							res.write(data)
@@ -52,7 +52,8 @@ function cokolwiek(req, res) {
 
 	req.on("end", function () {
 		var finish = JSON.parse(allData);
-		console.log(finish);
+		// console.log(finish);
+
 		if (finish.action == "FIRST") {
 			res.writeHead(200, { "content-type": "application/json", "Access-Control-Allow-Origin": "*" })
 			// servRes, first - nazwy katalogów i piosenki z pierwszego albumu
@@ -78,7 +79,8 @@ function cokolwiek(req, res) {
 					} else {
 						for (let fileIndex = 0; fileIndex < files.length; fileIndex++) {
 							if (files[fileIndex].substr(files[fileIndex].length - 4) == ".jpg") {
-								console.log("It's a cover!");
+								// It's a cover
+								// console.log("It's a cover!");
 							} else {
 								let statsSize = fs.statSync(__dirname + "/static/albums/" + servRes.albums[0] + "/" + files[fileIndex]).size;
 								let fileInfo = {
@@ -108,7 +110,8 @@ function cokolwiek(req, res) {
 				} else {
 					for (let fileIndex = 0; fileIndex < files.length; fileIndex++) {
 						if (files[fileIndex].substr(files[fileIndex].length - 4) == ".jpg") {
-							console.log("It's a cover!");
+							// It's a cover
+							// console.log("It's a cover!");
 						} else {
 							let statsSize = fs.statSync(__dirname + "/static/albums/" + finish.albumName + "/" + files[fileIndex]).size;
 							let fileInfo = {

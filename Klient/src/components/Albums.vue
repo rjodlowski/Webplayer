@@ -19,20 +19,18 @@ export default {
       };
     },
     registerClickInComp: function () {
-      this.$emit("imageClicked", this.currAlbum)
+      this.$emit("imageClicked", this.currAlbum);
     },
   },
-  computed: {
-    // getAlbumNames() {
-    //   // return this.$store.state.dataFromServ.albums;
-    // },
-  },
+  computed: {},
 };
 </script>
 
 <style scoped>
-#album > div {
-  outline: 1px solid yellow;
+#album > img {
+  width: 100%;
+  height: 140px;
+  /* outline: 1px solid yellow; */
 }
 
 .albumCover {
