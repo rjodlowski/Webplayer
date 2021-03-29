@@ -94,7 +94,6 @@ function cokolwiek(req, res) {
 				})
 			})
 		} else if (finish.action == "NEXT") {
-
 			// Send back a list of songs from an album
 			res.writeHead(200, { "content-type": "application/json", "Access-Control-Allow-Origin": "*" })
 			// servRes, first - nazwy katalogów i piosenki z danego albumu
