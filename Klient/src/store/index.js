@@ -8,6 +8,11 @@ Vue.use(Vuex)
 const state = {
 	dataFromServ: {},
 	currAlbum: "",
+	currSongDisplayName: "Title of a song",
+	songPlaying: false,
+	songPlayingName: "",
+	playShown: true,
+	pauseShown: false,
 }
 
 const getters = {
@@ -16,6 +21,15 @@ const getters = {
 	},
 	getCurrAlbumName: function (state) {
 		return state.currAlbum
+	},
+	getPauseShownState: function () {
+		return state.pauseShown
+	},
+	getPlayShownState: function () {
+		return state.playShown
+	},
+	getCurrPlayingSong: function () {
+		return state.currSongDisplayName;
 	}
 }
 

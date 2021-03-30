@@ -1,8 +1,7 @@
 <template>
-  <div id="album">
+  <div id="main">
     <img
       :src="`http://localhost:3000/albums/${currAlbum}/cover.jpg`"
-      alt=""
       @click="registerClickInComp"
     />
   </div>
@@ -13,26 +12,20 @@ export default {
   name: "Albums",
   props: ["currAlbum"],
   methods: {
-    getImageUrl: function (folder) {
-      return {
-        "background-image": `../../static/albums/${folder}/cover.jpg`,
-      };
-    },
     registerClickInComp: function () {
       this.$emit("imageClicked", this.currAlbum);
     },
   },
-  computed: {},
 };
 </script>
 
 <style scoped>
-#album > img {
+#main > img {
   width: 100%;
   height: 140px;
   /* outline: 1px solid yellow; */
+  cursor: pointer;
 }
-
 .albumCover {
   width: 150px;
   height: 150px;

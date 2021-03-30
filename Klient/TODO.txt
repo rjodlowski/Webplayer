@@ -1,0 +1,12 @@
+--------- TODO ---------
+1) Make song selection
+2) Fix button click
+	- target is to have one song selected
+	- selected song name 
+3) Get music file 
+	- if a song is playing, stop and play next
+
+--------- BUGS ---------
+
+
+

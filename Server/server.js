@@ -12,15 +12,15 @@ const qs = require("querystring");
 // })
 
 const server = http.createServer(function (req, res) {
-	console.log(req.method);
+	// console.log(req.method);
 
 	switch (req.method) {
 		case "GET":
 			if (req.url == "/") {
 				// console.log(req.url);
 			} else if (req.url.startsWith("/albums/")) {
+				var path = decodeURIComponent(req.url)
 				if (req.url.endsWith(".jpg")) {
-					var path = decodeURIComponent(req.url)
 					fs.readFile("./static" + path, function (error, data) {
 						if (error) {
 							return console.log(error);
@@ -31,18 +31,26 @@ const server = http.createServer(function (req, res) {
 						}
 					})
 				} else if (req.url.endsWith(".mp3")) {
-
+					fs.readFile("./static" + path, function (error, data) {
+						if (error) {
+							return console.log(error)
+						} else {
+							res.writeHead(200, { "Content-Type": "audio/mpeg" })
+							res.write(data)
+							res.end();
+						}
+					})
 				}
 			}
 			break;
 		case "POST":
-			cokolwiek(req, res)
+			handlePost(req, res)
 
 			break;
 	}
 })
 
-function cokolwiek(req, res) {
+function handlePost(req, res) {
 	var allData = "";
 
 	req.on("data", function (data) {
@@ -91,7 +99,7 @@ function cokolwiek(req, res) {
 							}
 						}
 					}
-					console.log(servRes);
+					// console.log(servRes);
 					res.end(JSON.stringify(servRes, null, 4));
 				})
 			})
@@ -122,7 +130,7 @@ function cokolwiek(req, res) {
 						}
 					}
 				}
-				console.log(servRes);
+				// console.log(servRes);
 				res.end(JSON.stringify(servRes, null, 4));
 			});
 

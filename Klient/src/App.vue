@@ -11,14 +11,26 @@
       </div>
       <div id="songs">
         <div id="title">WEBPLAYER</div>
-        <songs
-          :fetchData="getFirstFetchData"
-          :currAlbumName="getCurrAlbumName"
-        ></songs>
+        <div id="songContainer">
+          <songs
+            v-for="song in getFirstFetchData.files"
+            :key="song.name"
+            :currSong="song"
+            :currAlbumName="getCurrAlbumName"
+            @changePlayBtn="registerPlayBtnChg"
+            :playShown="getPlayShownState"
+            :pauseShown="getPauseShownState"
+          ></songs>
+        </div>
       </div>
     </div>
     <div id="playerDiv">
-      <player></player>
+      <player
+        :currPlayingSongName="getCurrPlayingSong"
+        @changePlayBtn="registerPlayBtnChg"
+        :playShown="getPlayShownState"
+        :pauseShown="getPauseShownState"
+      ></player>
     </div>
   </div>
 </template>
@@ -38,7 +50,6 @@ export default {
   created() {
     // Make a fetch, get a list of songs
     this.$store.dispatch("firstFetch");
-    // this.$store.dispatch("getAlbums");
   },
   computed: {
     getFirstFetchData() {
@@ -47,11 +58,24 @@ export default {
     getCurrAlbumName() {
       return this.$store.getters.getCurrAlbumName;
     },
+    getPlayShownState() {
+      return this.$store.getters.getPlayShownState;
+    },
+    getPauseShownState() {
+      return this.$store.getters.getPauseShownState;
+    },
+    getCurrPlayingSong() {
+      return this.$store.getters.getCurrPlayingSong;
+    },
   },
   methods: {
     registerClick: function (childAlbum) {
       this.$store.state.currAlbum = childAlbum;
       this.$store.dispatch("getAlbums", childAlbum);
+    },
+    registerPlayBtnChg: function () {
+      this.$store.state.playShown = !this.$store.state.playShown;
+      this.$store.state.pauseShown = !this.$store.state.pauseShown;
     },
   },
 };
@@ -77,14 +101,25 @@ export default {
   position: absolute;
   height: calc(100% - 200px);
 }
+#songContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow: auto;
+  width: 100%;
+}
+
 #playerDiv {
   height: 200px;
   max-height: 200px;
   min-height: 200px;
   width: 100%;
-  background-color: yellow;
+  min-width: 800px;
+  background-color: blue;
   position: absolute;
   bottom: 0;
+  color: white;
 }
 #albums {
   background-color: green;

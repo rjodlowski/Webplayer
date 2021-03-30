@@ -1,19 +1,23 @@
 <template>
-  <div id="main">
-    <div id="songContainer">
-      <div class="song" v-for="song in fetchData.files" :key="song.name">
-        <div class="songAlbum">
-          {{ currAlbumName }}
-        </div>
-        <div class="songName">
-          {{ song.name }}
-        </div>
-        <div class="songSize">
-          Size:
-          {{ (song.size / 1048576).toString().substring(0, 4) }}
-          MB
-        </div>
-      </div>
+  <div class="song">
+    <div class="songAlbum">
+      {{ currAlbumName }}
+    </div>
+    <div class="songName">
+      {{ currSong.name }}
+    </div>
+    <div class="songSize">
+      Size:
+      {{ (currSong.size / 1048576).toString().substring(0, 4) }}
+      MB
+    </div>
+    <div class="playSong">
+      <i class="fas fa-play fa-2x" v-if="playShown" @click="chgMiniPlayBtn"></i>
+      <i
+        class="fas fa-pause fa-2x"
+        v-if="pauseShown"
+        @click="chgMiniPlayBtn"
+      ></i>
     </div>
   </div>
 </template>
@@ -21,24 +25,16 @@
 <script>
 export default {
   name: "Songs",
-  props: ["fetchData", "currAlbumName"],
+  props: ["currAlbumName", "currSong", "playShown", "pauseShown"],
+  methods: {
+    chgMiniPlayBtn: function () {
+      this.$emit("changePlayBtn");
+    },
+  },
 };
 </script>
 
 <style scoped>
-#main {
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-}
-
-#songContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
 .song {
   display: Flex;
   align-items: center;
@@ -49,12 +45,10 @@ export default {
   transition: backdrop-filter 0.5s;
   border-radius: 5px;
 }
-
 .song:hover {
   backdrop-filter: brightness(90%);
   cursor: pointer;
 }
-
 .songAlbum {
   display: flex;
   justify-content: center;
@@ -62,7 +56,6 @@ export default {
   width: 25%;
   height: 100%;
 }
-
 .songName {
   display: flex;
   justify-content: center;
@@ -71,12 +64,23 @@ export default {
   width: 50%;
   color: #0000ff;
 }
-
 .songSize {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
   width: 25%;
+}
+.playSong {
+  height: 50px;
+  width: 50px;
+  /* background-color: red; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.fa-play,
+.fa-pause {
+  color: grey;
 }
 </style>
