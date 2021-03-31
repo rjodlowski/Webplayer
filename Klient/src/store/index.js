@@ -8,11 +8,24 @@ Vue.use(Vuex)
 const state = {
 	dataFromServ: {},
 	currAlbum: "",
-	currSongDisplayName: "Title of a song",
-	songPlaying: false,
-	songPlayingName: "",
+
+	currentSong: {
+		playShown: false,
+		pauseShown: true,
+		songName: "",
+	},
+	previousSong: {
+		playShown: false,
+		pauseShown: true,
+		songName: "",
+	},
+
+
 	playShown: true,
 	pauseShown: false,
+
+	currSong: "Song name",
+	songPlaying: false,
 }
 
 const getters = {
@@ -22,14 +35,17 @@ const getters = {
 	getCurrAlbumName: function (state) {
 		return state.currAlbum
 	},
-	getPauseShownState: function () {
+	getPauseShownState: function (state) {
 		return state.pauseShown
 	},
-	getPlayShownState: function () {
+	getPlayShownState: function (state) {
 		return state.playShown
 	},
-	getCurrPlayingSong: function () {
-		return state.currSongDisplayName;
+	getCurrSongName: function (state) {
+		return state.currSong
+	},
+	getSongPlayingState: function (state) {
+		return state.songPlaying
 	}
 }
 
@@ -41,12 +57,14 @@ const mutations = {
 		state.currAlbum = newData.albums[0]
 		// console.log(state.currAlbum);
 		console.log("First fetch result object: ", state.dataFromServ);
+
+		state.currSong = newData.files[0].name
 	},
 	CHANGE_FILES(state, newData) {
 		state.dataFromServ.files = newData.files;
 		// console.log(state.currAlbum);
 		console.log("Podmieniono piosenki", state.dataFromServ);
-	}
+	},
 }
 
 // Actions
@@ -62,7 +80,7 @@ const actions = {
 			.then(response => {
 				commit("CHANGE_FILES", response.data)
 			})
-	}
+	},
 }
 
 // Export store

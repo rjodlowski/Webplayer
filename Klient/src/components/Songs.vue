@@ -1,5 +1,5 @@
 <template>
-  <div class="song">
+  <div class="song" @click="songClicked">
     <div class="songAlbum">
       {{ currAlbumName }}
     </div>
@@ -28,8 +28,31 @@ export default {
   props: ["currAlbumName", "currSong", "playShown", "pauseShown"],
   methods: {
     chgMiniPlayBtn: function () {
+      this.markSongClicked();
+      console.log("xD", this.currAlbumName, this.currSong.name);
+      // Set currently playing song
       this.$emit("changePlayBtn");
     },
+    songClicked: function () {
+      this.markSongClicked();
+      console.log(
+        `U clicked a song ${this.currSong.name} in an album ${this.currAlbumName} `
+      );
+      this.$emit("setCurrSong", this.currSong.name);
+    },
+    markSongClicked: function () {
+      if (!this.elClicked) {
+        this.$el.style.backdropFilter = "brightness(90%)";
+      } else {
+        this.$el.style.backdropFilter = "";
+      }
+      this.elClicked = !this.elClicked;
+    },
+  },
+  data: function () {
+    return {
+      elClicked: false,
+    };
   },
 };
 </script>

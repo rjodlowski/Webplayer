@@ -6,6 +6,14 @@
 3) Get music file 
 	- if a song is playing, stop and play next
 
+--------- IDEAS ----------
+Żeby odtworzyć piosenkę potrzebuję jej nazwy
+Po kliknięciu PLAY pobierana jest nzawa klikniętej
+	piosenki i zapisywana w storze 
+Element audio za pomocą GET po pobraniu albumu 
+	i piosenki pobiera plik z serwera
+
+
 --------- BUGS ---------
 
 

@@ -1,13 +1,13 @@
 <template>
   <div id="main">
     <div id="songName">
-      {{ currPlayingSongName }}
+      {{ currSong }}
     </div>
     <div id="playerBtns">
       <div id="previousSong" class="arrows">
         <i class="fas fa-arrow-left fa-6x"></i>
       </div>
-      <div id="playSong">
+      <div id="playSong" @click="playAudio">
         <i
           class="far fa-play-circle fa-8x"
           v-if="playShown"
@@ -23,13 +23,20 @@
         <i class="fas fa-arrow-right fa-6x"></i>
       </div>
     </div>
+    <audio id="audio" controls>
+      <source
+        :src="`http://localhost:3000/albums/${currAlbum}/${currSong}`"
+        id="audio_src"
+        type="audio/mp3"
+      />
+    </audio>
   </div>
 </template>
 
 <script>
 export default {
   name: "Player",
-  props: ["currSong", "playShown", "pauseShown", "currPlayingSongName"],
+  props: ["currAlbum", "playShown", "pauseShown", "currSong"],
   methods: {
     previousClicked: function () {},
     followingClicked: function () {},
@@ -37,6 +44,20 @@ export default {
     changePlayBtn: function () {
       this.$emit("changePlayBtn");
     },
+    playAudio: function () {
+      document.getElementById("audio").load();
+      if (!this.songPlaying) {
+        document.getElementById("audio").play();
+      } else {
+        document.getElementById("audio").pause();
+      }
+      this.songPlaying = !this.songPlaying;
+    },
+  },
+  data: function () {
+    return {
+      songPlaying: false,
+    };
   },
 };
 </script>
@@ -87,5 +108,8 @@ export default {
 .fa-play-circle,
 .fa-pause-circle {
   color: white;
+}
+#audio {
+  display: none;
 }
 </style>

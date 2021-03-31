@@ -17,19 +17,22 @@
             :key="song.name"
             :currSong="song"
             :currAlbumName="getCurrAlbumName"
-            @changePlayBtn="registerPlayBtnChg"
             :playShown="getPlayShownState"
             :pauseShown="getPauseShownState"
+            @changePlayBtn="registerPlayBtnChg"
+            @setCurrSong="registerSongChange"
+            @getPlayState="getSongPlayingState"
           ></songs>
         </div>
       </div>
     </div>
     <div id="playerDiv">
       <player
-        :currPlayingSongName="getCurrPlayingSong"
-        @changePlayBtn="registerPlayBtnChg"
+        :currAlbum="getCurrAlbumName"
+        :currSong="getCurrSongName"
         :playShown="getPlayShownState"
         :pauseShown="getPauseShownState"
+        @changePlayBtn="registerPlayBtnChg"
       ></player>
     </div>
   </div>
@@ -64,18 +67,26 @@ export default {
     getPauseShownState() {
       return this.$store.getters.getPauseShownState;
     },
-    getCurrPlayingSong() {
-      return this.$store.getters.getCurrPlayingSong;
+    getCurrSongName() {
+      return this.$store.getters.getCurrSongName;
+    },
+    getSongPlayingState() {
+      return this.$store.getters.getSongPlayingState;
     },
   },
   methods: {
     registerClick: function (childAlbum) {
+      // console.log("essa");
       this.$store.state.currAlbum = childAlbum;
+
       this.$store.dispatch("getAlbums", childAlbum);
     },
     registerPlayBtnChg: function () {
       this.$store.state.playShown = !this.$store.state.playShown;
       this.$store.state.pauseShown = !this.$store.state.pauseShown;
+    },
+    registerSongChange: function (newSongName) {
+      this.$store.state.currSong = newSongName;
     },
   },
 };
