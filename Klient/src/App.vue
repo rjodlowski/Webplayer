@@ -21,7 +21,6 @@
             :pauseShown="getPauseShownState"
             @changePlayBtn="registerPlayBtnChg"
             @setCurrSong="registerSongChange"
-            @getPlayState="getSongPlayingState"
           ></songs>
         </div>
       </div>
@@ -53,6 +52,12 @@ export default {
   created() {
     // Make a fetch, get a list of songs
     this.$store.dispatch("firstFetch");
+
+    // Set first song in first album as a current song
+    // Target: called after first fetch ended
+    setTimeout(() => {
+      this.registerSongChange(this.$store.state.currSong);
+    }, 100);
   },
   computed: {
     getFirstFetchData() {
@@ -94,7 +99,10 @@ export default {
           this.$store.state.currentSong.element = songDiv.children[i];
         }
       }
-      console.log(this.$store.state.currentSong);
+      console.log(
+        "Set $store.state.currentSong: ",
+        this.$store.state.currentSong
+      );
 
       this.$store.state.currSong = newSongName;
     },
@@ -130,7 +138,6 @@ export default {
   overflow: auto;
   width: 100%;
 }
-
 #playerDiv {
   height: 200px;
   max-height: 200px;

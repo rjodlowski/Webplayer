@@ -11,7 +11,7 @@
       {{ (currSong.size / 1048576).toString().substring(0, 4) }}
       MB
     </div>
-    <div class="playSong">
+    <div class="playSong" @click="playAudio">
       <i class="fas fa-play fa-2x" v-if="playShown" @click="chgMiniPlayBtn"></i>
       <i
         class="fas fa-pause fa-2x"
@@ -47,6 +47,15 @@ export default {
         this.$el.style.backdropFilter = "";
       }
       this.elClicked = !this.elClicked;
+    },
+    playAudio: function () {
+      document.getElementById("audio").load();
+      if (!this.songPlaying) {
+        document.getElementById("audio").play();
+      } else {
+        document.getElementById("audio").pause();
+      }
+      this.songPlaying = !this.songPlaying;
     },
   },
   data: function () {

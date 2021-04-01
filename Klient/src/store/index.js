@@ -10,10 +10,8 @@ const state = {
 	currAlbum: "",
 
 	currentSong: {
-		playShown: false,
-		pauseShown: true,
-		// songName: "",
-		// albumName: "",
+		playShown: true,
+		pauseShown: false,
 		element: "",
 	},
 	// previousSong: {
