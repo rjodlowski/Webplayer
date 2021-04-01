@@ -76,7 +76,6 @@ export default {
   },
   methods: {
     registerClick: function (childAlbum) {
-      // console.log("essa");
       this.$store.state.currAlbum = childAlbum;
 
       this.$store.dispatch("getAlbums", childAlbum);

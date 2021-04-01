@@ -13,11 +13,13 @@ const state = {
 		playShown: false,
 		pauseShown: true,
 		songName: "",
+		albumName: "",
 	},
 	previousSong: {
 		playShown: false,
 		pauseShown: true,
 		songName: "",
+		albumName: "",
 	},
 
 
@@ -46,6 +48,12 @@ const getters = {
 	},
 	getSongPlayingState: function (state) {
 		return state.songPlaying
+	},
+	getCurrentSong: function (state) {
+		return state.currentSong
+	},
+	getPreviousSong: function (state) {
+		return state.previousSong
 	}
 }
 

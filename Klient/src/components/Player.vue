@@ -1,7 +1,7 @@
 <template>
   <div id="main">
     <div id="songName">
-      {{ currSong }}
+      {{ currSong.substring(0, currSong.length - 4) }}
     </div>
     <div id="playerBtns">
       <div id="previousSong" class="arrows">
@@ -40,7 +40,6 @@ export default {
   methods: {
     previousClicked: function () {},
     followingClicked: function () {},
-    playClicked: function () {},
     changePlayBtn: function () {
       this.$emit("changePlayBtn");
     },

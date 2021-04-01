@@ -4,7 +4,7 @@
       {{ currAlbumName }}
     </div>
     <div class="songName">
-      {{ currSong.name }}
+      {{ currSong.name.substring(0, currSong.name.length - 4) }}
     </div>
     <div class="songSize">
       Size:
@@ -42,7 +42,7 @@ export default {
     },
     markSongClicked: function () {
       if (!this.elClicked) {
-        this.$el.style.backdropFilter = "brightness(90%)";
+        this.$el.style.backdropFilter = "brightness(80%)";
       } else {
         this.$el.style.backdropFilter = "";
       }
