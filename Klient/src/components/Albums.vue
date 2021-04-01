@@ -20,6 +20,10 @@ export default {
 </script>
 
 <style scoped>
+#main {
+  width: 100%;
+  height: 140px;
+}
 #main > img {
   width: 100%;
   height: 140px;
