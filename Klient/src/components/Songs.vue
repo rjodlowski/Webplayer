@@ -28,16 +28,16 @@ export default {
   props: ["currAlbumName", "currSong", "playShown", "pauseShown"],
   methods: {
     chgMiniPlayBtn: function () {
-      this.markSongClicked();
-      console.log("xD", this.currAlbumName, this.currSong.name);
+      // console.log("xD", this.currAlbumName, this.currSong.name);
+
       // Set currently playing song
       this.$emit("changePlayBtn");
     },
     songClicked: function () {
       this.markSongClicked();
-      console.log(
-        `U clicked a song ${this.currSong.name} in an album ${this.currAlbumName} `
-      );
+      // console.log(
+      //   `U clicked a song ${this.currSong.name} in an album ${this.currAlbumName} `
+      // );
       this.$emit("setCurrSong", this.currSong.name);
     },
     markSongClicked: function () {
