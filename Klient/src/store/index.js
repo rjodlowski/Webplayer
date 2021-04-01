@@ -12,15 +12,16 @@ const state = {
 	currentSong: {
 		playShown: false,
 		pauseShown: true,
-		songName: "",
-		albumName: "",
+		// songName: "",
+		// albumName: "",
+		element: "",
 	},
-	previousSong: {
-		playShown: false,
-		pauseShown: true,
-		songName: "",
-		albumName: "",
-	},
+	// previousSong: {
+	// 	playShown: false,
+	// 	pauseShown: true,
+	// 	songName: "",
+	// 	albumName: "",
+	// },
 
 
 	playShown: true,

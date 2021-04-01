@@ -85,6 +85,17 @@ export default {
       this.$store.state.pauseShown = !this.$store.state.pauseShown;
     },
     registerSongChange: function (newSongName) {
+      var songDiv = document.getElementById("songContainer");
+      for (let i = 0; i < songDiv.childElementCount; i++) {
+        if (
+          songDiv.children[i].children[1].innerText ==
+          newSongName.substring(0, newSongName.length - 4)
+        ) {
+          this.$store.state.currentSong.element = songDiv.children[i];
+        }
+      }
+      console.log(this.$store.state.currentSong);
+
       this.$store.state.currSong = newSongName;
     },
   },
