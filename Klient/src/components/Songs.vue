@@ -35,6 +35,9 @@ export default {
     },
     songClicked: function () {
       this.markSongClicked();
+      if (this.$el.style.backdropFilter == "") {
+        this.$el.style.backdropFilter = "brightness(80%)";
+      }
       // console.log(
       //   `U clicked a song ${this.currSong.name} in an album ${this.currAlbumName} `
       // );

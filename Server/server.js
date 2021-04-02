@@ -12,11 +12,11 @@ const qs = require("querystring");
 // })
 
 const server = http.createServer(function (req, res) {
-	console.log(req.method);
+	// console.log(req.method);
 
 	switch (req.method) {
 		case "GET":
-			console.log(req.url);
+			// console.log(req.url);
 			if (req.url == "/") {
 				// console.log(req.url);
 			} else if (req.url.startsWith("/albums/")) {

@@ -107,6 +107,7 @@ export default {
       );
 
       this.$store.state.currSong = newSongName;
+      this.cleanUpSongSelection();
     },
     forwardsBackwardsButton: function (forwardsdOrBackwards) {
       let songDiv = document.getElementById("songContainer");
@@ -114,7 +115,7 @@ export default {
       let followingSong = null;
       let curSong =
         this.$store.state.currentSong.element.children[1].innerText + ".mp3";
-      
+
       // Set following song
       if (forwardsdOrBackwards == "forwards") {
         followingSong = this.$store.state.dataFromServ.files[
@@ -122,11 +123,11 @@ export default {
         ].name;
       } else if (forwardsdOrBackwards == "backwards") {
         followingSong = state.dataFromServ.files[0].name;
-      } 
+      }
 
       if (curSong != followingSong) {
-        console.log("Songs are different, can switch");
-        
+        // console.log("Songs are different, can switch");
+
         // Get the index of a current song
         let currentSongIndex = null;
         for (let i = 0; i < songDiv.childElementCount; i++) {
@@ -141,8 +142,6 @@ export default {
           state.currentSong.element = songDiv.children[currentSongIndex + 1];
         } else if (forwardsdOrBackwards == "backwards") {
           state.currentSong.element = songDiv.children[currentSongIndex - 1];
-        } else {
-          console.log("xD");
         }
         state.currentSong.playShown = true;
         state.currentSong.pauseShown = false;
@@ -164,6 +163,14 @@ export default {
         // Change current song display
       } else {
         console.log("Can't switch!");
+      }
+    },
+    cleanUpSongSelection: function () {
+      var songDiv = document.getElementById("songContainer");
+      for (let i = 0; i < songDiv.childElementCount; i++) {
+        if (songDiv.children[i] != this.$store.state.currentSong.element) {
+          songDiv.children[i].style.backdropFilter = "";
+        }
       }
     },
   },
