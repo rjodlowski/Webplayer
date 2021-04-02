@@ -11,3 +11,7 @@
 # Webplayer files
 Klient/node_modules/*
 Server/static/*
+ŚmietkoKopie/*
+ŚmietkoKopie/App.vue
+ŚmietkoKopie/index.js
+ŚmietkoKopie/Songs.vue
