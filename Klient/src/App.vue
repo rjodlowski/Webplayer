@@ -207,11 +207,14 @@ export default {
 }
 #songContainer {
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
   flex-direction: column;
   overflow: auto;
-  width: 100%;
+  width: calc(100% - 150px);
+  position: absolute;
+  top: 100px;
+  height: calc(100% - 100px);
 }
 #playerDiv {
   height: 200px;
@@ -253,5 +256,7 @@ export default {
   font-size: 35px;
   margin: 15px;
   color: #4b4bff;
+  position: absolute;
+  top: 0;
 }
 </style>
