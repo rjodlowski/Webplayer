@@ -205,7 +205,7 @@ export default {
   overflow: auto;
   height: calc(100% - 100px);
   width: calc(100% - 150px);
-      min-width: 550px;
+  min-width: 550px;
   position: absolute;
   top: 100px;
 }
@@ -214,7 +214,7 @@ export default {
   max-height: 200px;
   min-height: 200px;
   width: 100%;
-  min-width: 800px;
+  min-width: 900px;
   background-color: blue;
   position: absolute;
   bottom: 0;

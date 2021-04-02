@@ -72,7 +72,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 800px;
+  min-width: 900px;
   width: 100%;
   height: 100%;
 }
@@ -103,10 +103,12 @@ export default {
 #songName {
   height: 50px;
   position: absolute;
-  left: 7%;
+  left: 4%;
   top: 75px;
   display: flex;
   align-items: center;
+  width: 22%;
+  text-align: center;
 }
 .fa-arrow-right,
 .fa-arrow-left,
