@@ -4,7 +4,7 @@
       {{ currSong.substring(0, currSong.length - 4) }}
     </div>
     <div id="playerBtns">
-      <div id="previousSong" class="arrows">
+      <div id="previousSong" class="arrows" @click="previousClicked">
         <i class="fas fa-arrow-left fa-6x"></i>
       </div>
       <div id="playSong" @click="playAudio">
@@ -19,7 +19,7 @@
           @click="changePlayBtn"
         ></i>
       </div>
-      <div id="followingSong" class="arrows">
+      <div id="followingSong" class="arrows" @click="followingClicked">
         <i class="fas fa-arrow-right fa-6x"></i>
       </div>
     </div>
@@ -38,8 +38,6 @@ export default {
   name: "Player",
   props: ["currAlbum", "playShown", "pauseShown", "currSong"],
   methods: {
-    previousClicked: function () {},
-    followingClicked: function () {},
     changePlayBtn: function () {
       this.$emit("changePlayBtn");
     },
@@ -51,6 +49,14 @@ export default {
         document.getElementById("audio").pause();
       }
       this.songPlaying = !this.songPlaying;
+    },
+    previousClicked: function () {
+      console.log("Go to previous song");
+      this.$emit("previousSong");
+    },
+    followingClicked: function () {
+      console.log("Go to next song");
+      this.$emit("nextSong");
     },
   },
   data: function () {
