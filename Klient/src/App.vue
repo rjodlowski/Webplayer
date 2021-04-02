@@ -203,10 +203,11 @@ export default {
   align-items: center;
   flex-direction: column;
   overflow: auto;
+  height: calc(100% - 100px);
   width: calc(100% - 150px);
+      min-width: 550px;
   position: absolute;
   top: 100px;
-  height: calc(100% - 100px);
 }
 #playerDiv {
   height: 200px;
@@ -232,12 +233,11 @@ export default {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  /* flex-grow: 1; */
-  height: 100%;
-  /* background-color: pink; */
-  min-width: 350px;
-  width: calc(100% - 150px);
   margin-left: 150px;
+  /* background-color: pink; */
+  height: 100%;
+  width: calc(100% - 150px);
+  min-width: 550px;
 }
 #title {
   height: 50px;

@@ -33,11 +33,16 @@ const server = http.createServer(function (req, res) {
 					})
 				} else if (req.url.endsWith(".mp3")) {
 					console.log("GET .mp3");
+					var stats = fs.statSync("./static" + path)
 					fs.readFile("./static" + path, function (error, data) {
 						if (error) {
 							return console.log(error)
 						} else {
-							res.writeHead(200, { "Content-Type": "audio/mpeg", "Access-Control-Allow-Origin": "*" })
+							res.writeHead(200, {
+								"Content-Type": "audio/mpeg", "Access-Control-Allow-Origin": "*",
+								"Content-length": stats.size,
+								"Accept-ranges": "bytes"
+							})
 							res.write(data)
 							res.end();
 						}

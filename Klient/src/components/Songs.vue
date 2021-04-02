@@ -11,13 +11,9 @@
       {{ (currSong.size / 1048576).toString().substring(0, 4) }}
       MB
     </div>
-    <div class="playSong" @click="playAudio">
-      <i class="fas fa-play fa-2x" v-if="playShown" @click="chgMiniPlayBtn"></i>
-      <i
-        class="fas fa-pause fa-2x"
-        v-if="pauseShown"
-        @click="chgMiniPlayBtn"
-      ></i>
+    <div class="playSong" @click="comboFunction">
+      <i class="fas fa-play fa-2x" v-if="playShown"></i>
+      <i class="fas fa-pause fa-2x" v-if="pauseShown"></i>
     </div>
   </div>
 </template>
@@ -29,7 +25,7 @@ export default {
   methods: {
     chgMiniPlayBtn: function () {
       // console.log("xD", this.currAlbumName, this.currSong.name);
-
+      console.log("changePlayBtn");
       // Set currently playing song
       this.$emit("changePlayBtn");
     },
@@ -60,10 +56,15 @@ export default {
       }
       this.songPlaying = !this.songPlaying;
     },
+    comboFunction() {
+      this.playAudio();
+      this.chgMiniPlayBtn();
+    },
   },
   data: function () {
     return {
       elClicked: false,
+      songPlaying: false,
     };
   },
 };
@@ -80,39 +81,49 @@ export default {
   transition: backdrop-filter 0.5s;
   border-radius: 5px;
 }
+.song > div {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .song:hover {
   backdrop-filter: brightness(90%);
   cursor: pointer;
 }
-.songAlbum {
+.song:hover > .playSong {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  opacity: 1;
+}
+.song:hover > .playSong > i {
+  display: flex;
+}
+.songAlbum {
   width: 25%;
   height: 100%;
 }
 .songName {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100%;
   width: 50%;
   color: #0000ff;
 }
 .songSize {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100%;
   width: 25%;
 }
 .playSong {
   height: 50px;
   width: 50px;
+  display: none;
+  /* opacity: 0; */
+  transition: opacity 0.5s;
+
   /* background-color: red; */
+}
+.playSong > i {
+  /* display: none; */
   display: flex;
-  justify-content: center;
-  align-items: center;
+  /* background-color: green; */
 }
 .fa-play,
 .fa-pause {

@@ -91,13 +91,13 @@ export default {
 .arrows {
   width: 100px;
   height: 100px;
-  /* background-color: red; */
+  background-color: red;
   cursor: pointer;
 }
 #playSong {
   width: 150px;
   height: 150px;
-  /* background-color: red; */
+  background-color: red;
   cursor: pointer;
 }
 #songName {
