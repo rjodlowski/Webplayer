@@ -32,8 +32,8 @@
         :playShown="getPlayShownState"
         :pauseShown="getPauseShownState"
         @changePlayBtn="registerPlayBtnChg"
-        @nextSong="playNextSong"
-        @previousSong="playPreviousSong"
+        @nextSong="forwardsBackwardsButton('forwards')"
+        @previousSong="forwardsBackwardsButton('backwards')"
       ></player>
     </div>
   </div>
@@ -108,21 +108,26 @@ export default {
 
       this.$store.state.currSong = newSongName;
     },
-    playNextSong: function () {
-      let state = this.$store.state;
+    forwardsBackwardsButton: function (forwardsdOrBackwards) {
       let songDiv = document.getElementById("songContainer");
+      let state = this.$store.state;
+      let followingSong = null;
       let curSong =
         this.$store.state.currentSong.element.children[1].innerText + ".mp3";
-      let lastSong = this.$store.state.dataFromServ.files[
-        Object.keys(this.$store.state.dataFromServ.files).length - 1
-      ].name;
+      
+      // Set following song
+      if (forwardsdOrBackwards == "forwards") {
+        followingSong = this.$store.state.dataFromServ.files[
+          Object.keys(this.$store.state.dataFromServ.files).length - 1
+        ].name;
+      } else if (forwardsdOrBackwards == "backwards") {
+        followingSong = state.dataFromServ.files[0].name;
+      } 
 
-      if (curSong != lastSong) {
-        console.log("Songs are different, can go forwards");
-
-        // if audio is playing, stop it
-
-        ///// get the index of a current song
+      if (curSong != followingSong) {
+        console.log("Songs are different, can switch");
+        
+        // Get the index of a current song
         let currentSongIndex = null;
         for (let i = 0; i < songDiv.childElementCount; i++) {
           if (songDiv.children[i] == state.currentSong.element) {
@@ -130,55 +135,35 @@ export default {
             break;
           }
         }
-        // set the next song as a current one
-        state.currentSong.element = songDiv.children[currentSongIndex + 1];
-        state.currentSong.playShown = true;
-        state.currentSong.pauseShown = false;
-        console.log("The previous song: ", state.currentSong.element);
-        // play audio
-        state.currSong =
-          state.currentSong.element.children[1].innerText + ".mp3";
-        // Change current song display
-      } else {
-        console.log("Can't go forwards!");
-      }
-    },
-    playPreviousSong: function () {
-      // if a song is not the first one in an album
-      // set current song the previous one
-      //// communication between components???
-      // auto play freshly selected song
 
-      // var songDiv = document.getElementById("songContainer");
-      let state = this.$store.state;
-      let songDiv = document.getElementById("songContainer");
-
-      let curSong = state.currentSong.element.children[1].innerText + ".mp3";
-      let firstSong = state.dataFromServ.files[0].name;
-
-      if (curSong != firstSong) {
-        console.log("Songs are different, can go back");
-        // if audio is playing, stop it
-
-        ///// get the index of a current song
-        let currentSongIndex = null;
-        for (let i = 0; i < songDiv.childElementCount; i++) {
-          if (songDiv.children[i] == state.currentSong.element) {
-            currentSongIndex = i;
-            break;
-          }
+        // Set the following song as a current one
+        if (forwardsdOrBackwards == "forwards") {
+          state.currentSong.element = songDiv.children[currentSongIndex + 1];
+        } else if (forwardsdOrBackwards == "backwards") {
+          state.currentSong.element = songDiv.children[currentSongIndex - 1];
+        } else {
+          console.log("xD");
         }
-        // set the next song as a current one
-        state.currentSong.element = songDiv.children[currentSongIndex - 1];
         state.currentSong.playShown = true;
         state.currentSong.pauseShown = false;
-        console.log("The previous song: ", state.currentSong.element);
-        // play audio
+        console.log("The following song: ", state.currentSong.element);
+
         state.currSong =
           state.currentSong.element.children[1].innerText + ".mp3";
+
+        // Play audio
+        ///// Stop currently playing track
+        document.getElementById("audio").pause();
+        ///// Start playing next one if play button was hit
+
+        if ((1 == 1) | console.log("Play button was hit")) {
+          document.getElementById("audio").load();
+          document.getElementById("audio").play();
+        }
+
         // Change current song display
       } else {
-        console.log("Can't go back!");
+        console.log("Can't switch!");
       }
     },
   },
