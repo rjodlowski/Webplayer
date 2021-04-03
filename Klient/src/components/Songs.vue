@@ -29,8 +29,15 @@ export default {
     "songPlayingState",
     "currentSong",
   ],
-  updated() {
-    // this.chgBtnDisplay();
+  watch: {
+    songPlayingState: function () {
+      // console.log(`Prop changed from: ${oldVal} to: ${newVal}`);
+      // if (this.$el.attributes[0] != this.currentSong.element.attributes[0]) {
+      //   }
+      if (this.showPauseInComp) {
+        this.chgBtnDisplay();
+      }
+    },
   },
   methods: {
     chgBtnDisplay: function () {
@@ -45,10 +52,10 @@ export default {
       // );
 
       if (this.$el.attributes[0] == this.currentSong.element.attributes[0]) {
-        if (this.songPlayingState == true) {
+        if (this.songPlayingState) {
           this.showPlayInComp = false;
           this.showPauseInComp = true;
-        } else if (this.songPlayingState == false) {
+        } else if (!this.songPlayingState) {
           this.showPlayInComp = true;
           this.showPauseInComp = false;
         }
