@@ -17,7 +17,6 @@
             :key="song.name"
             :currSong="song"
             :currAlbumName="getCurrAlbumName"
-            @changePlayBtn="registerPlayBtnChg"
             @setCurrSong="registerSongChange"
             :songPlayingState="getSongPlayingState"
             @changeSongPlayState="changeSongPlayState"
@@ -34,7 +33,6 @@
       <player
         :currAlbum="getCurrAlbumName"
         :currSong="getCurrSongName"
-        @changePlayBtn="registerPlayBtnChg"
         @nextSong="forwardsBackwardsButton('forwards')"
         @previousSong="forwardsBackwardsButton('backwards')"
         :songPlayingState="getSongPlayingState"
@@ -104,10 +102,6 @@ export default {
       this.$store.state.currAlbum = childAlbum;
 
       this.$store.dispatch("getAlbums", childAlbum);
-    },
-    registerPlayBtnChg: function () {
-      this.$store.state.playShown = !this.$store.state.playShown;
-      this.$store.state.pauseShown = !this.$store.state.pauseShown;
     },
     registerSongChange: function (newSongName) {
       var songDiv = document.getElementById("songContainer");
