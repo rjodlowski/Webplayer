@@ -3,6 +3,11 @@
     <div id="songName">
       {{ currSong.substring(0, currSong.length - 4) }}
     </div>
+    <div id="timer">
+      <div id="currentTime">2:22</div>
+      <div id="spacer">{{ spacer }}</div>
+      <div id="duration">2:22</div>
+    </div>
     <div id="playerBtns">
       <div id="previousSong" class="arrows" @click="previousClicked">
         <i class="fas fa-arrow-left fa-6x"></i>
@@ -15,6 +20,7 @@
         <i class="fas fa-arrow-right fa-6x"></i>
       </div>
     </div>
+    <input type="range" id="timeDisplay" />
     <audio id="audio" controls>
       <source
         :src="`http://localhost:3000/albums/${currAlbum}/${currSong}`"
@@ -91,6 +97,7 @@ export default {
       songPlaying: false,
       showPlayInComp: true,
       showPauseInComp: false,
+      spacer: "/",
     };
   },
 };
@@ -101,6 +108,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   min-width: 900px;
   width: 100%;
   height: 100%;
@@ -138,6 +146,22 @@ export default {
   align-items: center;
   width: 22%;
   text-align: center;
+}
+#timer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 4%;
+  height: 50px;
+  width: 190px;
+  text-align: center;
+  background-color: red;
+  font-size: 45px;
+}
+#timeDisplay {
+  width: 700px;
+  height: 25px;
 }
 .fa-arrow-right,
 .fa-arrow-left,
