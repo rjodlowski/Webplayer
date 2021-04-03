@@ -14,6 +14,7 @@ export default {
   methods: {
     registerClickInComp: function () {
       this.$emit("imageClicked", this.currAlbum);
+      this.$emit("cleanCurrentSong");
     },
   },
 };

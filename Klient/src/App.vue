@@ -21,6 +21,8 @@
             :songPlayingState="getSongPlayingState"
             @changeSongPlayState="changeSongPlayState"
             :currentSong="getCurrentSong"
+            :newSong="getNewSongLoaded"
+            @chgSongLoaded="chgSongLoaded"
           ></songs>
           <!-- <songs
             :playShown="getPlayShownState"
@@ -39,6 +41,8 @@
         @changeSongPlayState="changeSongPlayState"
         :currentSong="getCurrentSong"
         :songChanged="getIfSongChanged"
+        :newSong="getNewSongLoaded"
+        @chgSongLoaded="chgSongLoaded"
       ></player>
       <!-- <player
         :playShown="getPlayShownState"
@@ -92,6 +96,9 @@ export default {
     getIfSongChanged() {
       return this.$store.getters.getIfSongChanged;
     },
+    getNewSongLoaded() {
+      return this.$store.getters.getNewSongLoaded;
+    },
   },
   methods: {
     registerClick: function (childAlbum) {
@@ -111,6 +118,7 @@ export default {
           newSongName.substring(0, newSongName.length - 4)
         ) {
           this.$store.state.currentSong.element = songDiv.children[i];
+          this.$store.state.newSongLoaded = true;
         }
       }
       console.log(
@@ -155,7 +163,12 @@ export default {
         } else if (forwardsdOrBackwards == "backwards") {
           state.currentSong.element = songDiv.children[currentSongIndex - 1];
         }
-        state.songChanged = true;
+
+        if (state.songPlaying == false) {
+          state.songChanged = true;
+        } else {
+          state.songChanged = false;
+        }
         // state.currentSong.playShown = true;
         // state.currentSong.pauseShown = false;
 
@@ -192,6 +205,9 @@ export default {
     },
     changeSongPlayState: function (valueToChangeTo) {
       this.$store.state.songPlaying = valueToChangeTo;
+    },
+    chgSongLoaded: function (valueToChangeTo) {
+      this.$store.state.songChanged = valueToChangeTo;
     },
   },
 };

@@ -28,6 +28,7 @@ export default {
     // "pauseShown",
     "songPlayingState",
     "currentSong",
+    "newSong",
   ],
   watch: {
     songPlayingState: function () {
@@ -80,9 +81,13 @@ export default {
       this.elClicked = !this.elClicked;
     },
     playAudio: function () {
-      if (this.currentSong.element != this.$el || this.currentSong.first) {
+      if (
+        this.currentSong.element != this.$el ||
+        (this.currentSong.first && this.newSong)
+      ) {
         document.getElementById("audio").load();
         this.currentSong.first = false;
+        this.$emit("chgSongLoaded", false);
       }
       if (!this.songPlayingState) {
         document.getElementById("audio").play();

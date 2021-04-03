@@ -35,6 +35,7 @@ export default {
     // "pauseShown",
     "songPlayingState",
     "currentSong",
+    "newSong",
   ],
   // updated() {
   //   console.log(this.songPlayingState);
@@ -56,18 +57,25 @@ export default {
       // this.$emit("changePlayBtn");
     },
     playAudio: function () {
-      document.getElementById("audio").load();
-      if (!this.songPlayingState) {
-        document.getElementById("audio").play();
-        this.$emit("changeSongPlayState", true);
+      if (this.currentSong.element != "") {
+        if (this.newSong) {
+          document.getElementById("audio").load();
+          this.$emit("chgSongLoaded", false);
+        }
+        if (!this.songPlayingState) {
+          document.getElementById("audio").play();
+          this.$emit("changeSongPlayState", true);
+        } else {
+          document.getElementById("audio").pause();
+          this.$emit("changeSongPlayState", false);
+        }
+        // this.songPlaying = !this.songPlaying;
+        setTimeout(() => {
+          this.chgBtnDisplay();
+        }, 50);
       } else {
-        document.getElementById("audio").pause();
-        this.$emit("changeSongPlayState", false);
+        console.log("Wybierz utwór!!");
       }
-      // this.songPlaying = !this.songPlaying;
-      setTimeout(() => {
-        this.chgBtnDisplay();
-      }, 50);
     },
     previousClicked: function () {
       console.log("Go to previous song");

@@ -28,6 +28,7 @@ const state = {
 
 	currSong: "Song name",
 	songPlaying: false,
+	songChanged: true,
 }
 
 const getters = {
@@ -54,6 +55,9 @@ const getters = {
 	},
 	getPreviousSong: function (state) {
 		return state.previousSong
+	},
+	getNewSongLoaded: function (state) {
+		return state.songChanged;
 	}
 }
 
