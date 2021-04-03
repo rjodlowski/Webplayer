@@ -65,10 +65,6 @@ export default {
       this.registerSongChange(this.$store.state.currSong);
     }, 100);
   },
-  mounted() {
-    // Set first song in first album as a current song
-    // Target: called after first fetch ended
-  },
   computed: {
     getFirstFetchData() {
       return this.$store.getters.getFirstFetchData;
@@ -162,14 +158,15 @@ export default {
           state.currentSong.element.children[1].innerText + ".mp3";
 
         // Play audio
-        ///// Stop currently playing track
-        document.getElementById("audio").pause();
-        ///// Start playing next one if play button was hit
 
-        if ((1 == 1) | console.log("Play button was hit")) {
+        ///// Start playing next one if play button was hit
+        let songCurerntlPlaying = this.getSongPlayingState;
+        if (songCurerntlPlaying) {
+          document.getElementById("audio").pause();
           document.getElementById("audio").load();
           document.getElementById("audio").play();
         }
+        this.cleanUpSongSelection();
 
         // Change current song display
       } else {
@@ -181,6 +178,8 @@ export default {
       for (let i = 0; i < songDiv.childElementCount; i++) {
         if (songDiv.children[i] != this.$store.state.currentSong.element) {
           songDiv.children[i].style.backdropFilter = "";
+        } else {
+          songDiv.children[i].style.backdropFilter = "brightness(80%)";
         }
       }
     },
