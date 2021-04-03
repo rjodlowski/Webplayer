@@ -109,6 +109,10 @@ export default {
       this.$store.state.currAlbum = childAlbum;
 
       this.$store.dispatch("getAlbums", childAlbum);
+      setTimeout(() => {
+        this.registerSongChange(this.$store.state.dataFromServ.files[0].name);
+        document.getElementById("audio").load();
+      }, 50);
     },
     registerSongChange: function (newSongName) {
       var songDiv = document.getElementById("songContainer");

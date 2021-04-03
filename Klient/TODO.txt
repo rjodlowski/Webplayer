@@ -1,12 +1,5 @@
 --------- TODO ---------
-2) Fix button click
-	- target is to have one song selected
-	- selected song name 
-3) Get music file 
-	- if a song is playing, stop and play next
-4) Song stops if another one selected
-5) Song stays highlighted if it's playing
-6) 
+6) Synchronize mini paly btn after song change 
 
 --------- IDEAS ----------
 Żeby odtworzyć piosenkę potrzebuję jej nazwy
@@ -17,9 +10,5 @@ Element audio za pomocą GET po pobraniu albumu
 
 
 --------- BUGS ---------
-
-LAYOUT
-	1) Some first songs hidden in a list under the "WEBPLAYER" sign
-
 
 
