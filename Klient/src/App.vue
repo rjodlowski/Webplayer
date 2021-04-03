@@ -37,6 +37,10 @@
         @changePlayBtn="registerPlayBtnChg"
         @nextSong="forwardsBackwardsButton('forwards')"
         @previousSong="forwardsBackwardsButton('backwards')"
+        :songPlayingState="getSongPlayingState"
+        @changeSongPlayState="changeSongPlayState"
+        :currentSong="getCurrentSong"
+        :songChanged="getIfSongChanged"
       ></player>
       <!-- <player
         :playShown="getPlayShownState"
@@ -87,9 +91,16 @@ export default {
     getCurrentSong() {
       return this.$store.getters.getCurrentSong;
     },
+    getIfSongChanged() {
+      return this.$store.getters.getIfSongChanged;
+    },
   },
   methods: {
     registerClick: function (childAlbum) {
+      if (this.$store.state.songPlaying) {
+        document.getElementById("audio").pause();
+        this.changeSongPlayState(false);
+      }
       this.$store.state.currAlbum = childAlbum;
 
       this.$store.dispatch("getAlbums", childAlbum);
@@ -150,8 +161,10 @@ export default {
         } else if (forwardsdOrBackwards == "backwards") {
           state.currentSong.element = songDiv.children[currentSongIndex - 1];
         }
-        state.currentSong.playShown = true;
-        state.currentSong.pauseShown = false;
+        state.songChanged = true;
+        // state.currentSong.playShown = true;
+        // state.currentSong.pauseShown = false;
+
         console.log("The following song: ", state.currentSong.element);
 
         state.currSong =

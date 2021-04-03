@@ -8,16 +8,8 @@
         <i class="fas fa-arrow-left fa-6x"></i>
       </div>
       <div id="playSong" @click="playAudio">
-        <i
-          class="far fa-play-circle fa-8x"
-          v-if="playShown"
-          @click="changePlayBtn"
-        ></i>
-        <i
-          class="far fa-pause-circle fa-8x"
-          v-if="pauseShown"
-          @click="changePlayBtn"
-        ></i>
+        <i class="far fa-play-circle fa-8x" v-if="showPlayInComp"></i>
+        <i class="far fa-pause-circle fa-8x" v-if="showPauseInComp"></i>
       </div>
       <div id="followingSong" class="arrows" @click="followingClicked">
         <i class="fas fa-arrow-right fa-6x"></i>
@@ -36,19 +28,46 @@
 <script>
 export default {
   name: "Player",
-  props: ["currAlbum", "playShown", "pauseShown", "currSong"],
+  props: [
+    "currAlbum",
+    "currSong",
+    // "playShown",
+    // "pauseShown",
+    "songPlayingState",
+    "currentSong",
+  ],
+  // updated() {
+  //   console.log(this.songPlayingState);
+  // },
+  watch: {
+    songPlayingState: function () {
+      this.chgBtnDisplay();
+    },
+  },
   methods: {
-    changePlayBtn: function () {
-      this.$emit("changePlayBtn");
+    chgBtnDisplay: function () {
+      if (this.songPlayingState) {
+        this.showPlayInComp = false;
+        this.showPauseInComp = true;
+      } else if (!this.songPlayingState) {
+        this.showPlayInComp = true;
+        this.showPauseInComp = false;
+      }
+      // this.$emit("changePlayBtn");
     },
     playAudio: function () {
       document.getElementById("audio").load();
-      if (!this.songPlaying) {
+      if (!this.songPlayingState) {
         document.getElementById("audio").play();
+        this.$emit("changeSongPlayState", true);
       } else {
         document.getElementById("audio").pause();
+        this.$emit("changeSongPlayState", false);
       }
-      this.songPlaying = !this.songPlaying;
+      // this.songPlaying = !this.songPlaying;
+      setTimeout(() => {
+        this.chgBtnDisplay();
+      }, 50);
     },
     previousClicked: function () {
       console.log("Go to previous song");
@@ -62,6 +81,8 @@ export default {
   data: function () {
     return {
       songPlaying: false,
+      showPlayInComp: true,
+      showPauseInComp: false,
     };
   },
 };
