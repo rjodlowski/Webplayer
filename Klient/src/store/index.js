@@ -10,8 +10,8 @@ const state = {
 	currAlbum: "",
 
 	currentSong: {
-		playShown: true,
-		pauseShown: false,
+		songName: "",
+		albumName: "",
 		element: "",
 	},
 	// previousSong: {
@@ -22,8 +22,8 @@ const state = {
 	// },
 
 
-	playShown: true,
-	pauseShown: false,
+	// playShown: true,
+	// pauseShown: false,
 
 	currSong: "Song name",
 	songPlaying: false,
@@ -36,12 +36,12 @@ const getters = {
 	getCurrAlbumName: function (state) {
 		return state.currAlbum
 	},
-	getPauseShownState: function (state) {
-		return state.pauseShown
-	},
-	getPlayShownState: function (state) {
-		return state.playShown
-	},
+	// getPauseShownState: function (state) {
+	// 	return state.pauseShown
+	// },
+	// getPlayShownState: function (state) {
+	// 	return state.playShown
+	// },
 	getCurrSongName: function (state) {
 		return state.currSong
 	},

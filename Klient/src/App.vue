@@ -17,11 +17,16 @@
             :key="song.name"
             :currSong="song"
             :currAlbumName="getCurrAlbumName"
-            :playShown="getPlayShownState"
-            :pauseShown="getPauseShownState"
             @changePlayBtn="registerPlayBtnChg"
             @setCurrSong="registerSongChange"
+            :songPlayingState="getSongPlayingState"
+            @changeSongPlayState="changeSongPlayState"
+            :currentSong="getCurrentSong"
           ></songs>
+          <!-- <songs
+            :playShown="getPlayShownState"
+            :pauseShown="getPauseShownState"
+          ></songs> -->
         </div>
       </div>
     </div>
@@ -29,12 +34,14 @@
       <player
         :currAlbum="getCurrAlbumName"
         :currSong="getCurrSongName"
-        :playShown="getPlayShownState"
-        :pauseShown="getPauseShownState"
         @changePlayBtn="registerPlayBtnChg"
         @nextSong="forwardsBackwardsButton('forwards')"
         @previousSong="forwardsBackwardsButton('backwards')"
       ></player>
+      <!-- <player
+        :playShown="getPlayShownState"
+        :pauseShown="getPauseShownState"
+      ></player> -->
     </div>
   </div>
 </template>
@@ -54,12 +61,13 @@ export default {
   created() {
     // Make a fetch, get a list of songs
     this.$store.dispatch("firstFetch");
-
-    // Set first song in first album as a current song
-    // Target: called after first fetch ended
     setTimeout(() => {
       this.registerSongChange(this.$store.state.currSong);
     }, 100);
+  },
+  mounted() {
+    // Set first song in first album as a current song
+    // Target: called after first fetch ended
   },
   computed: {
     getFirstFetchData() {
@@ -68,17 +76,20 @@ export default {
     getCurrAlbumName() {
       return this.$store.getters.getCurrAlbumName;
     },
-    getPlayShownState() {
-      return this.$store.getters.getPlayShownState;
-    },
-    getPauseShownState() {
-      return this.$store.getters.getPauseShownState;
-    },
+    // getPlayShownState() {
+    //   return this.$store.getters.getPlayShownState;
+    // },
+    // getPauseShownState() {
+    //   return this.$store.getters.getPauseShownState;
+    // },
     getCurrSongName() {
       return this.$store.getters.getCurrSongName;
     },
     getSongPlayingState() {
       return this.$store.getters.getSongPlayingState;
+    },
+    getCurrentSong() {
+      return this.$store.getters.getCurrentSong;
     },
   },
   methods: {
@@ -172,6 +183,9 @@ export default {
           songDiv.children[i].style.backdropFilter = "";
         }
       }
+    },
+    changeSongPlayState: function (valueToChangeTo) {
+      this.$store.state.songPlaying = valueToChangeTo;
     },
   },
 };

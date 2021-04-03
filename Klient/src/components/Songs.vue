@@ -11,9 +11,9 @@
       {{ (currSong.size / 1048576).toString().substring(0, 4) }}
       MB
     </div>
-    <div class="playSong" @click="comboFunction">
-      <i class="fas fa-play fa-2x" v-if="playShown"></i>
-      <i class="fas fa-pause fa-2x" v-if="pauseShown"></i>
+    <div class="playSong" @click="playAudio">
+      <i class="fas fa-play fa-2x" v-if="showPlayInComp"></i>
+      <i class="fas fa-pause fa-2x" v-if="showPauseInComp"></i>
     </div>
   </div>
 </template>
@@ -21,13 +21,38 @@
 <script>
 export default {
   name: "Songs",
-  props: ["currAlbumName", "currSong", "playShown", "pauseShown"],
+  props: [
+    "currAlbumName",
+    "currSong",
+    // "playShown",
+    // "pauseShown",
+    "songPlayingState",
+    "currentSong",
+  ],
+  updated() {
+    // this.chgBtnDisplay();
+  },
   methods: {
-    chgMiniPlayBtn: function () {
-      // console.log("xD", this.currAlbumName, this.currSong.name);
-      console.log("changePlayBtn");
-      // Set currently playing song
-      this.$emit("changePlayBtn");
+    chgBtnDisplay: function () {
+      // console.log("chgBtnDisplay");
+      // console.log(
+      //   this.$el.attributes[0] == this.currentSong.element.attributes[0]
+      // );
+      // console.log(
+      //   this.showPlayInComp,
+      //   this.showPauseInComp,
+      //   this.songPlayingState
+      // );
+
+      if (this.$el.attributes[0] == this.currentSong.element.attributes[0]) {
+        if (this.songPlayingState == true) {
+          this.showPlayInComp = false;
+          this.showPauseInComp = true;
+        } else if (this.songPlayingState == false) {
+          this.showPlayInComp = true;
+          this.showPauseInComp = false;
+        }
+      }
     },
     songClicked: function () {
       this.markSongClicked();
@@ -49,22 +74,26 @@ export default {
     },
     playAudio: function () {
       document.getElementById("audio").load();
-      if (!this.songPlaying) {
+      if (!this.songPlayingState) {
         document.getElementById("audio").play();
+        this.$emit("changeSongPlayState", true);
       } else {
         document.getElementById("audio").pause();
+        this.$emit("changeSongPlayState", false);
       }
-      this.songPlaying = !this.songPlaying;
+      setTimeout(() => {
+        this.chgBtnDisplay();
+      }, 50);
     },
     comboFunction() {
       this.playAudio();
-      this.chgMiniPlayBtn();
     },
   },
   data: function () {
     return {
       elClicked: false,
-      songPlaying: false,
+      showPlayInComp: true,
+      showPauseInComp: false,
     };
   },
 };
