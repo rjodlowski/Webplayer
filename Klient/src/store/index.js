@@ -13,6 +13,7 @@ const state = {
 		songName: "",
 		albumName: "",
 		element: "",
+		first: true,
 	},
 	// previousSong: {
 	// 	playShown: false,

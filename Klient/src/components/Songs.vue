@@ -80,7 +80,10 @@ export default {
       this.elClicked = !this.elClicked;
     },
     playAudio: function () {
-      document.getElementById("audio").load();
+      if (this.currentSong.element != this.$el || this.currentSong.first) {
+        document.getElementById("audio").load();
+        this.currentSong.first = false;
+      }
       if (!this.songPlayingState) {
         document.getElementById("audio").play();
         this.$emit("changeSongPlayState", true);
