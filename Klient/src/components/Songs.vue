@@ -30,9 +30,11 @@ export default {
     "songPlayingState",
     "currentSong",
     "newSong",
+    "intervalSet",
   ],
   watch: {
     songPlayingState: function () {
+      // console.log(`Prop changed from: ${oldVal} to: ${newVal}`);
       // if (this.$el.attributes[0] != this.currentSong.element.attributes[0]) {
       //   }
       if (this.showPauseInComp) {
@@ -87,10 +89,15 @@ export default {
 
         audio.onloadeddata = function (e) {
           this.$emit("songLoadedRange", e.target.duration);
+          this.$emit("songTimeUpdate", audio.currentTime);
         }.bind(this);
-        audio.ontimeupdate = function (e) {
-          this.$emit("songTimeUpdate", e.target.currentTime);
-        }.bind(this);
+
+        if (!this.intervalSet) {
+          this.$emit("intervalSet", true);
+          setInterval(() => {
+            this.$emit("songTimeUpdate", audio.currentTime);
+          }, 1000);
+        }
       } else {
         audio.pause();
         this.$emit("changeSongPlayState", false);

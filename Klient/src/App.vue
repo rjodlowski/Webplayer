@@ -25,6 +25,8 @@
             @chgSongLoaded="chgSongLoaded"
             @songLoadedRange="songLoadedRange"
             @songTimeUpdate="songTimeUpdate"
+            @intervalSet="intervalSet"
+            :intervalSet="getIfIntervalSet"
           ></songs>
         </div>
       </div>
@@ -43,6 +45,9 @@
         @chgSongLoaded="chgSongLoaded"
         :currSongTime="getcurrSongTime"
         :songDuration="getcurrSongDuration"
+        @playSongFromNow="playSongFromNow"
+        @intervalSet="intervalSet"
+        :intervalSet="getIfIntervalSet"
       ></player>
     </div>
   </div>
@@ -63,9 +68,9 @@ export default {
   created() {
     // Make a fetch, get a list of songs
     this.$store.dispatch("firstFetch");
-    setTimeout(() => {
-      this.registerSongChange(this.$store.state.currSong);
-    }, 100);
+    // setTimeout(() => {
+    //   this.registerSongChange(this.$store.state.currSong);
+    // }, 100);
   },
   computed: {
     getFirstFetchData() {
@@ -94,6 +99,9 @@ export default {
     },
     getcurrSongDuration() {
       return this.$store.getters.getcurrSongDuration;
+    },
+    getIfIntervalSet() {
+      return this.$store.getters.getIfIntervalSet;
     },
   },
   methods: {
@@ -133,67 +141,73 @@ export default {
     },
     // Handles player's forwards/backwards buttons
     forwardsBackwardsButton: function (forwardsdOrBackwards) {
-      let songDiv = document.getElementById("songContainer");
-      let state = this.$store.state;
-      let followingSong = null;
-      let curSong =
-        this.$store.state.currentSong.element.children[1].innerText + ".mp3";
+      if (this.$store.state.currSong != "Song name      ") {
+        let songDiv = document.getElementById("songContainer");
+        let state = this.$store.state;
+        let followingSong = null;
+        let curSong =
+          this.$store.state.currentSong.element.children[1].innerText + ".mp3";
 
-      // Set following song
-      if (forwardsdOrBackwards == "forwards") {
-        followingSong = this.$store.state.dataFromServ.files[
-          Object.keys(this.$store.state.dataFromServ.files).length - 1
-        ].name;
-      } else if (forwardsdOrBackwards == "backwards") {
-        followingSong = state.dataFromServ.files[0].name;
-      }
+        // clear song progress display
 
-      if (curSong != followingSong) {
-        // console.log("Songs are different, can switch");
-
-        // Get the index of a current song
-        let currentSongIndex = null;
-        for (let i = 0; i < songDiv.childElementCount; i++) {
-          if (songDiv.children[i] == state.currentSong.element) {
-            currentSongIndex = i;
-            break;
-          }
-        }
-
-        // Set the following song as a current one
+        // Set following song
         if (forwardsdOrBackwards == "forwards") {
-          state.currentSong.element = songDiv.children[currentSongIndex + 1];
+          followingSong = this.$store.state.dataFromServ.files[
+            Object.keys(this.$store.state.dataFromServ.files).length - 1
+          ].name;
         } else if (forwardsdOrBackwards == "backwards") {
-          state.currentSong.element = songDiv.children[currentSongIndex - 1];
+          followingSong = state.dataFromServ.files[0].name;
         }
 
-        if (state.songPlaying == false) {
-          state.songChanged = true;
+        if (curSong != followingSong) {
+          // console.log("Songs are different, can switch");
+          document.getElementById("audio").value = 0;
+          this.$store.state.songCurrTime = 0;
+
+          // Get the index of a current song
+          let currentSongIndex = null;
+          for (let i = 0; i < songDiv.childElementCount; i++) {
+            if (songDiv.children[i] == state.currentSong.element) {
+              currentSongIndex = i;
+              break;
+            }
+          }
+
+          // Set the following song as a current one
+          if (forwardsdOrBackwards == "forwards") {
+            state.currentSong.element = songDiv.children[currentSongIndex + 1];
+          } else if (forwardsdOrBackwards == "backwards") {
+            state.currentSong.element = songDiv.children[currentSongIndex - 1];
+          }
+
+          if (state.songPlaying == false) {
+            state.songChanged = true;
+          } else {
+            state.songChanged = false;
+          }
+
+          console.log("The following song: ", state.currentSong.element);
+
+          state.currSong =
+            state.currentSong.element.children[1].innerText + ".mp3";
+
+          // Play audio
+
+          ///// Start playing next one if play button was hit
+          let songCurerntlPlaying = this.getSongPlayingState;
+          if (songCurerntlPlaying) {
+            document.getElementById("audio").pause();
+            document.getElementById("audio").load();
+            document.getElementById("audio").play();
+          }
+          this.cleanUpSongSelection();
+
+          // Change current song display
         } else {
-          state.songChanged = false;
+          console.log("Can't switch!");
         }
-        // state.currentSong.playShown = true;
-        // state.currentSong.pauseShown = false;
-
-        console.log("The following song: ", state.currentSong.element);
-
-        state.currSong =
-          state.currentSong.element.children[1].innerText + ".mp3";
-
-        // Play audio
-
-        ///// Start playing next one if play button was hit
-        let songCurerntlPlaying = this.getSongPlayingState;
-        if (songCurerntlPlaying) {
-          document.getElementById("audio").pause();
-          document.getElementById("audio").load();
-          document.getElementById("audio").play();
-        }
-        this.cleanUpSongSelection();
-
-        // Change current song display
       } else {
-        console.log("Can't switch!");
+        console.log("choose a song");
       }
     },
     // Ensures, that current song is highlighted
@@ -215,19 +229,29 @@ export default {
     },
     // Sets song duration to a timer
     songLoadedRange: function (audioDuration) {
+      let timeDisplayInput = document.getElementById("timeDisplay");
+
       this.$store.state.songDuration = Math.floor(audioDuration);
-      document
-        .getElementById("timeDisplay")
-        .setAttribute("max", this.$store.state.songDuration);
-      console.log("Succesful bind store:", this.$store.state.songDuration);
+      timeDisplayInput.setAttribute("max", this.$store.state.songDuration);
+      timeDisplayInput.setAttribute("step", 0.0001);
     },
     // Updates current song time
     songTimeUpdate: function (currentTime) {
       let timeDisplayInput = document.getElementById("timeDisplay");
+
       this.$store.state.songCurrTime = currentTime;
-      timeDisplayInput.setAttribute("step", 0.05);
       timeDisplayInput.value = this.$store.state.songCurrTime;
-      console.log("App method store:", this.$store.state.songCurrTime);
+    },
+    // Continues playing a song from given point
+    playSongFromNow: function (whereToStartFrom) {
+      this.$store.state.songCurrTime = whereToStartFrom;
+
+      if (this.$store.state.songPlaying) {
+        document.getElementById("audio").play();
+      }
+    },
+    intervalSet: function () {
+      this.$store.state.intervalSet = true;
     },
   },
 };

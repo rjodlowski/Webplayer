@@ -16,13 +16,14 @@ const state = {
 		first: true,
 	},
 
-	currSong: "Song name",
+	currSong: "Song name      ",
 	songPlaying: false,
 	songChanged: true,
 
 	// Song progress
 	songDuration: null,
 	songCurrTime: null,
+	intervalSet: false,
 }
 
 const getters = {
@@ -54,6 +55,9 @@ const getters = {
 	},
 	getcurrSongDuration: function (state) {
 		return state.songDuration
+	},
+	getIfIntervalSet: function(state) {
+		return state.intervalSet
 	}
 }
 
@@ -66,7 +70,7 @@ const mutations = {
 		// console.log(state.currAlbum);
 		console.log("First fetch result object: ", state.dataFromServ);
 
-		state.currSong = newData.files[0].name
+		// state.currSong = newData.files[0].name
 	},
 	CHANGE_FILES(state, newData) {
 		state.dataFromServ.files = newData.files;

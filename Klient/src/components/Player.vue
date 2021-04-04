@@ -35,7 +35,14 @@
         <i class="fas fa-arrow-right fa-6x"></i>
       </div>
     </div>
-    <input type="range" id="timeDisplay" min="0" @click="returnClickedVal" />
+    <input
+      type="range"
+      id="timeDisplay"
+      min="0"
+      max="512"
+      value="0"
+      @click="playSongFromNowComp"
+    />
     <audio id="audio" controls>
       <source
         :src="`http://localhost:3000/albums/${currAlbum}/${currSong}`"
@@ -52,13 +59,12 @@ export default {
   props: [
     "currAlbum",
     "currSong",
-    // "playShown",
-    // "pauseShown",
     "songPlayingState",
     "currentSong",
     "newSong",
     "currSongTime",
     "songDuration",
+    "intervalSet",
   ],
   // updated() {
   //   console.log(this.songPlayingState);
@@ -80,6 +86,7 @@ export default {
       // this.$emit("changePlayBtn");
     },
     playAudio: function () {
+      let audio = document.getElementById("audio");
       if (this.currentSong.element != "") {
         if (this.newSong) {
           document.getElementById("audio").load();
@@ -88,11 +95,22 @@ export default {
         if (!this.songPlayingState) {
           document.getElementById("audio").play();
           this.$emit("changeSongPlayState", true);
+
+          audio.onloadeddata = function (e) {
+            this.$emit("songLoadedRange", e.target.duration);
+            this.$emit("songTimeUpdate", audio.currentTime);
+          }.bind(this);
+
+          if (!this.intervalSet) {
+            this.$emit("intervalSet", true);
+            setInterval(() => {
+              this.$emit("songTimeUpdate", audio.currentTime);
+            }, 1000);
+          }
         } else {
           document.getElementById("audio").pause();
           this.$emit("changeSongPlayState", false);
         }
-        // this.songPlaying = !this.songPlaying;
         setTimeout(() => {
           this.chgBtnDisplay();
         }, 50);
@@ -108,8 +126,11 @@ export default {
       console.log("Go to next song");
       this.$emit("nextSong");
     },
-    returnClickedVal: function (event) {
-      console.log(event.target.value);
+    playSongFromNowComp: function (event) {
+      document.getElementById("audio").pause();
+      let storedTime = event.target.value;
+      document.getElementById("audio").currentTime = storedTime;
+      this.$emit("playSongFromNow", storedTime);
     },
   },
   data: function () {
