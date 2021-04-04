@@ -23,11 +23,9 @@
             :currentSong="getCurrentSong"
             :newSong="getNewSongLoaded"
             @chgSongLoaded="chgSongLoaded"
+            @songLoadedRange="songLoadedRange"
+            @songTimeUpdate="songTimeUpdate"
           ></songs>
-          <!-- <songs
-            :playShown="getPlayShownState"
-            :pauseShown="getPauseShownState"
-          ></songs> -->
         </div>
       </div>
     </div>
@@ -43,11 +41,9 @@
         :songChanged="getIfSongChanged"
         :newSong="getNewSongLoaded"
         @chgSongLoaded="chgSongLoaded"
+        :currSongTime="getcurrSongTime"
+        :songDuration="getcurrSongDuration"
       ></player>
-      <!-- <player
-        :playShown="getPlayShownState"
-        :pauseShown="getPauseShownState"
-      ></player> -->
     </div>
   </div>
 </template>
@@ -78,12 +74,6 @@ export default {
     getCurrAlbumName() {
       return this.$store.getters.getCurrAlbumName;
     },
-    // getPlayShownState() {
-    //   return this.$store.getters.getPlayShownState;
-    // },
-    // getPauseShownState() {
-    //   return this.$store.getters.getPauseShownState;
-    // },
     getCurrSongName() {
       return this.$store.getters.getCurrSongName;
     },
@@ -99,8 +89,15 @@ export default {
     getNewSongLoaded() {
       return this.$store.getters.getNewSongLoaded;
     },
+    getcurrSongTime() {
+      return this.$store.getters.getcurrSongTime;
+    },
+    getcurrSongDuration() {
+      return this.$store.getters.getcurrSongDuration;
+    },
   },
   methods: {
+    // Register album change
     registerClick: function (childAlbum) {
       if (this.$store.state.songPlaying) {
         document.getElementById("audio").pause();
@@ -114,6 +111,7 @@ export default {
         document.getElementById("audio").load();
       }, 50);
     },
+    // Registers song change
     registerSongChange: function (newSongName) {
       var songDiv = document.getElementById("songContainer");
       for (let i = 0; i < songDiv.childElementCount; i++) {
@@ -133,6 +131,7 @@ export default {
       this.$store.state.currSong = newSongName;
       this.cleanUpSongSelection();
     },
+    // Handles player's forwards/backwards buttons
     forwardsBackwardsButton: function (forwardsdOrBackwards) {
       let songDiv = document.getElementById("songContainer");
       let state = this.$store.state;
@@ -197,6 +196,7 @@ export default {
         console.log("Can't switch!");
       }
     },
+    // Ensures, that current song is highlighted
     cleanUpSongSelection: function () {
       var songDiv = document.getElementById("songContainer");
       for (let i = 0; i < songDiv.childElementCount; i++) {
@@ -212,6 +212,22 @@ export default {
     },
     chgSongLoaded: function (valueToChangeTo) {
       this.$store.state.songChanged = valueToChangeTo;
+    },
+    // Sets song duration to a timer
+    songLoadedRange: function (audioDuration) {
+      this.$store.state.songDuration = Math.floor(audioDuration);
+      document
+        .getElementById("timeDisplay")
+        .setAttribute("max", this.$store.state.songDuration);
+      console.log("Succesful bind store:", this.$store.state.songDuration);
+    },
+    // Updates current song time
+    songTimeUpdate: function (currentTime) {
+      let timeDisplayInput = document.getElementById("timeDisplay");
+      this.$store.state.songCurrTime = currentTime;
+      timeDisplayInput.setAttribute("step", 0.05);
+      timeDisplayInput.value = this.$store.state.songCurrTime;
+      console.log("App method store:", this.$store.state.songCurrTime);
     },
   },
 };

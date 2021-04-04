@@ -4,9 +4,24 @@
       {{ currSong.substring(0, currSong.length - 4) }}
     </div>
     <div id="timer">
-      <div id="currentTime">2:22</div>
+      <div id="currentTime">
+        {{ Math.floor(currSongTime / 60) }}:{{
+          (Math.floor(currSongTime) % 60).toString().length == 2
+            ? Math.floor(currSongTime) % 60
+            : `0${Math.floor(currSongTime) % 60}`
+        }}
+      </div>
       <div id="spacer">{{ spacer }}</div>
-      <div id="duration">2:22</div>
+      <div id="duration">
+        {{ Math.floor(songDuration / 60) }}:{{
+          (Math.floor(songDuration) % 60).toString().length == 2
+            ? Math.floor(songDuration) % 60
+            : `0${Math.floor(songDuration) % 60}`
+        }}
+      </div>
+    </div>
+    <div id="playlist">
+      <i class="fab fa-itunes-note fa-2x"></i>
     </div>
     <div id="playerBtns">
       <div id="previousSong" class="arrows" @click="previousClicked">
@@ -20,7 +35,7 @@
         <i class="fas fa-arrow-right fa-6x"></i>
       </div>
     </div>
-    <input type="range" id="timeDisplay" />
+    <input type="range" id="timeDisplay" min="0" @click="returnClickedVal" />
     <audio id="audio" controls>
       <source
         :src="`http://localhost:3000/albums/${currAlbum}/${currSong}`"
@@ -42,6 +57,8 @@ export default {
     "songPlayingState",
     "currentSong",
     "newSong",
+    "currSongTime",
+    "songDuration",
   ],
   // updated() {
   //   console.log(this.songPlayingState);
@@ -90,6 +107,9 @@ export default {
     followingClicked: function () {
       console.log("Go to next song");
       this.$emit("nextSong");
+    },
+    returnClickedVal: function (event) {
+      console.log(event.target.value);
     },
   },
   data: function () {
@@ -169,7 +189,24 @@ export default {
 .fa-pause-circle {
   color: white;
 }
+.fa-itunes-note {
+  color: red;
+}
 #audio {
   display: none;
+}
+#playlist {
+  height: 50px;
+  width: 150px;
+  background-color: yellow;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#playlist:hover {
+  cursor: pointer;
 }
 </style>

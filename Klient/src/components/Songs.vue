@@ -15,6 +15,9 @@
       <i class="fas fa-play fa-2x" v-if="showPlayInComp"></i>
       <i class="fas fa-pause fa-2x" v-if="showPauseInComp"></i>
     </div>
+    <div class="addSong">
+      <i class="fas fa-plus fa-2x"></i>
+    </div>
   </div>
 </template>
 
@@ -24,15 +27,12 @@ export default {
   props: [
     "currAlbumName",
     "currSong",
-    // "playShown",
-    // "pauseShown",
     "songPlayingState",
     "currentSong",
     "newSong",
   ],
   watch: {
     songPlayingState: function () {
-      // console.log(`Prop changed from: ${oldVal} to: ${newVal}`);
       // if (this.$el.attributes[0] != this.currentSong.element.attributes[0]) {
       //   }
       if (this.showPauseInComp) {
@@ -42,16 +42,6 @@ export default {
   },
   methods: {
     chgBtnDisplay: function () {
-      // console.log("chgBtnDisplay");
-      // console.log(
-      //   this.$el.attributes[0] == this.currentSong.element.attributes[0]
-      // );
-      // console.log(
-      //   this.showPlayInComp,
-      //   this.showPauseInComp,
-      //   this.songPlayingState
-      // );
-
       if (this.$el.attributes[0] == this.currentSong.element.attributes[0]) {
         if (this.songPlayingState) {
           this.showPlayInComp = false;
@@ -81,19 +71,28 @@ export default {
       this.elClicked = !this.elClicked;
     },
     playAudio: function () {
+      let audio = document.getElementById("audio");
       if (
         this.currentSong.element != this.$el ||
         (this.currentSong.first && this.newSong)
       ) {
-        document.getElementById("audio").load();
+        audio.load();
+
         this.currentSong.first = false;
         this.$emit("chgSongLoaded", false);
       }
       if (!this.songPlayingState) {
-        document.getElementById("audio").play();
+        audio.play();
         this.$emit("changeSongPlayState", true);
+
+        audio.onloadeddata = function (e) {
+          this.$emit("songLoadedRange", e.target.duration);
+        }.bind(this);
+        audio.ontimeupdate = function (e) {
+          this.$emit("songTimeUpdate", e.target.currentTime);
+        }.bind(this);
       } else {
-        document.getElementById("audio").pause();
+        audio.pause();
         this.$emit("changeSongPlayState", false);
       }
       setTimeout(() => {
@@ -120,7 +119,7 @@ export default {
   align-items: center;
   justify-content: center;
   height: 50px;
-  width: 80%;
+  width: 90%;
   margin: 3px;
   transition: backdrop-filter 0.5s;
   border-radius: 5px;
@@ -155,7 +154,8 @@ export default {
   height: 100%;
   width: 25%;
 }
-.playSong {
+.playSong,
+.addSong {
   height: 50px;
   width: 50px;
   display: none;
@@ -164,13 +164,15 @@ export default {
 
   /* background-color: red; */
 }
-.playSong > i {
+.playSong > i,
+.addSong > i {
   /* display: none; */
   display: flex;
   /* background-color: green; */
 }
 .fa-play,
-.fa-pause {
+.fa-pause,
+.fa-plus {
   color: grey;
 }
 </style>

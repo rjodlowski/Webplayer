@@ -15,20 +15,14 @@ const state = {
 		element: "",
 		first: true,
 	},
-	// previousSong: {
-	// 	playShown: false,
-	// 	pauseShown: true,
-	// 	songName: "",
-	// 	albumName: "",
-	// },
-
-
-	// playShown: true,
-	// pauseShown: false,
 
 	currSong: "Song name",
 	songPlaying: false,
 	songChanged: true,
+
+	// Song progress
+	songDuration: null,
+	songCurrTime: null,
 }
 
 const getters = {
@@ -38,12 +32,6 @@ const getters = {
 	getCurrAlbumName: function (state) {
 		return state.currAlbum
 	},
-	// getPauseShownState: function (state) {
-	// 	return state.pauseShown
-	// },
-	// getPlayShownState: function (state) {
-	// 	return state.playShown
-	// },
 	getCurrSongName: function (state) {
 		return state.currSong
 	},
@@ -53,11 +41,19 @@ const getters = {
 	getCurrentSong: function (state) {
 		return state.currentSong
 	},
-	getPreviousSong: function (state) {
-		return state.previousSong
-	},
+	// getPreviousSong: function (state) {
+	// 	return state.previousSong
+	// },
+	// Song changed
 	getNewSongLoaded: function (state) {
 		return state.songChanged;
+	},
+	// Song progress getters
+	getcurrSongTime: function (state) {
+		return state.songCurrTime
+	},
+	getcurrSongDuration: function (state) {
+		return state.songDuration
 	}
 }
 

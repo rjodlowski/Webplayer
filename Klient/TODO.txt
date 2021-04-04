@@ -1,5 +1,5 @@
 --------- TODO ---------
-6) Synchronize mini paly btn after song change 
+6) Synchronize mini play btn after song change 
 
 --------- IDEAS ----------
 Żeby odtworzyć piosenkę potrzebuję jej nazwy
