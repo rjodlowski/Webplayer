@@ -59,7 +59,11 @@ const getters = {
 	},
 	getIfIntervalSet: function (state) {
 		return state.intervalSet
-	}
+	},
+	// Playlist getters
+	getPlaylistSongs: function (state) {
+		return state.playlistSongs
+	},
 }
 
 // Mutations
@@ -78,7 +82,20 @@ const mutations = {
 		console.log("Podmieniono piosenki", state.dataFromServ);
 	},
 	SONG_TO_PLAYLIST(state, newData) {
-		state.playlistSongs.push(newData)
+		console.log("songToPlaylist", state.playlistSongs, newData);
+		// let canAddsong = true
+		// for (let i = 0; i < state.playlistSongs.length; i++) {
+		// 	console.log("for", state.playlistSongs[i]);
+		// 	if (state.playlistSongs[i].name == newData.name) {
+		// 		canAddsong = false
+		// 		break;
+		// 	}
+		// }
+		// if (canAddsong) {
+		// }
+		if (!newData.duplicate) {
+			state.playlistSongs.push(newData.song)
+		}
 		console.log("mutation", state.playlistSongs);
 	},
 	SAVE_PLAYLIST(state, newData) {

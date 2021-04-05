@@ -10,6 +10,8 @@ var playlistDB = new DataStore({
 	autoload: true,
 })
 
+
+
 const server = http.createServer(function (req, res) {
 	// console.log(req.method);
 
@@ -158,16 +160,46 @@ function handlePost(req, res) {
 			// 	}
 			// })
 
+			let currDbState = []
+			let theresDuplicate = false
 
-			// Insert the song object into db
-			playlistDB.insert(songToAdd, function (err, newDoc) {
+			playlistDB.find({}, function (err, docs) {
 				if (err) {
 					console.log(err);
 				} else {
-					console.log("Pomyślnie dodano piosenkę do bazy")
-					songsToSendBack = newDoc
+					// console.log("Obiekty z bazy danych:");
+					// console.log(JSON.stringify({ "docsy": docs }, null, 5));
+					// console.log(docs);
+					console.log("docs", docs);
+					currDbState = docs
+
+					console.log("db state: ", currDbState);
+					for (let i = 0; i < currDbState.length; i++) {
+						if (currDbState[i].name == songToAdd.name) {
+							theresDuplicate = true
+							break
+						}
+					}
+
+
+					if (!theresDuplicate) {
+						// Insert the song object into db
+						playlistDB.insert(songToAdd, function (err) {
+							if (err) {
+								console.log(err);
+							} else {
+								console.log("Pomyślnie dodano piosenkę do bazy")
+							}
+						})
+					} else {
+						console.log("Duplicate song found");
+					}
+					res.end(JSON.stringify({ song: songToAdd, duplicate: theresDuplicate }))
+
 				}
 			})
+
+
 
 			// Log all db elements
 			// playlistDB.find({}, function (err, docs) {
@@ -180,7 +212,6 @@ function handlePost(req, res) {
 			// 	}
 			// })
 
-			res.end(JSON.stringify(songToAdd))
 		} else if (finish.action == "GET_PLAYLIST") {
 			res.writeHead(200, { "content-type": "application/json", "Access-Control-Allow-Origin": "*" })
 

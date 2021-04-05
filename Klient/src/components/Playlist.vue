@@ -1,7 +1,7 @@
 <template>
   <div class="song" @click="songClicked">
     <div class="songAlbum">
-      {{ currAlbumName }}
+      {{ currSong.album }}
     </div>
     <div class="songName">
       {{ currSong.name.substring(0, currSong.name.length - 4) }}
@@ -15,9 +15,6 @@
       <i class="fas fa-play fa-2x" v-if="showPlayInComp"></i>
       <i class="fas fa-pause fa-2x" v-if="showPauseInComp"></i>
     </div>
-    <div class="addSong" @click="addSongToPlaylist">
-      <i class="fas fa-plus fa-2x"></i>
-    </div>
   </div>
 </template>
 
@@ -25,7 +22,6 @@
 export default {
   name: "Songs",
   props: [
-    "currAlbumName",
     "currSong",
     "songPlayingState",
     "currentSong",
@@ -34,6 +30,9 @@ export default {
   ],
   watch: {
     songPlayingState: function () {
+      // console.log(`Prop changed from: ${oldVal} to: ${newVal}`);
+      // if (this.$el.attributes[0] != this.currentSong.element.attributes[0]) {
+      //   }
       if (this.showPauseInComp) {
         this.chgBtnDisplay();
       }
@@ -71,12 +70,17 @@ export default {
     },
     playAudio: function () {
       let audio = document.getElementById("audio");
+      console.log("PlayAudio", this.currentSong.element);
+      console.log(this.currentSong.element != this.$el);
+      console.log(this.$el);
       if (
         this.currentSong.element != this.$el ||
         (this.currentSong.first && this.newSong)
       ) {
-        audio.load();
+        this.$emit("setCurrAlbumName", this.currSong.album);
+        this.$emit("registerSongChange", this.currSong.name);
 
+        audio.load();
         this.currentSong.first = false;
         this.$emit("chgSongLoaded", false);
       }
@@ -93,7 +97,7 @@ export default {
           this.$emit("intervalSet", true);
           setInterval(() => {
             this.$emit("songTimeUpdate", audio.currentTime);
-          }, 1000);
+          }, 950);
         }
       } else {
         audio.pause();
@@ -106,8 +110,8 @@ export default {
     comboFunction() {
       this.playAudio();
     },
-    addSongToPlaylist() {
-      this.$emit("addSongToPlaylist", this.currAlbumName, this.currSong);
+    setCurrAlbumName: function () {
+      this.$emit("setCurrAlbumName", this.currSong.album);
     },
   },
   data: function () {
@@ -161,8 +165,7 @@ export default {
   height: 100%;
   width: 25%;
 }
-.playSong,
-.addSong {
+.playSong {
   height: 50px;
   width: 50px;
   display: none;
@@ -171,15 +174,13 @@ export default {
 
   /* background-color: red; */
 }
-.playSong > i,
-.addSong > i {
+.playSong > i {
   /* display: none; */
   display: flex;
   /* background-color: green; */
 }
 .fa-play,
-.fa-pause,
-.fa-plus {
+.fa-pause {
   color: grey;
 }
 </style>

@@ -105,7 +105,7 @@ export default {
             this.$emit("intervalSet", true);
             setInterval(() => {
               this.$emit("songTimeUpdate", audio.currentTime);
-            }, 1000);
+            }, 950);
           }
         } else {
           document.getElementById("audio").pause();
@@ -120,6 +120,7 @@ export default {
     },
     previousClicked: function () {
       console.log("Go to previous song");
+
       this.$emit("previousSong");
     },
     followingClicked: function () {
