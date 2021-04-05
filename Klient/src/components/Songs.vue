@@ -160,7 +160,7 @@ export default {
 .songName {
   height: 100%;
   width: 50%;
-  color: #0000ff;
+  color: #0072ff;
 }
 .songSize {
   height: 100%;

@@ -396,13 +396,11 @@ export default {
   flex-direction: row;
   flex-grow: 1;
   width: 100%;
-  /* background-color: red; */
   position: absolute;
   height: calc(100% - 200px);
 }
 #songContainer {
   display: flex;
-  /* justify-content: center; */
   align-items: center;
   flex-direction: column;
   overflow: auto;
@@ -411,6 +409,7 @@ export default {
   min-width: 550px;
   position: absolute;
   top: 100px;
+  color: #a5a5a5;
 }
 #playerDiv {
   height: 200px;
@@ -418,13 +417,13 @@ export default {
   min-height: 200px;
   width: 100%;
   min-width: 900px;
-  background-color: blue;
+  background-color: #3500d3;
   position: absolute;
   bottom: 0;
-  color: white;
+  color: #a5a5a5;
 }
 #albums {
-  background-color: green;
+  background-color: #4003f7;
   width: 150px;
   height: 100%;
   overflow: auto;
@@ -437,10 +436,10 @@ export default {
   align-items: center;
   flex-direction: column;
   margin-left: 150px;
-  /* background-color: pink; */
   height: 100%;
   width: calc(100% - 150px);
   min-width: 550px;
+  background-color: #282828;
 }
 #title {
   height: 50px;
@@ -448,9 +447,9 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 35px;
-  margin: 15px;
-  color: #4b4bff;
+  font-size: 69px;
+  margin-top: 27px;
+  color: #0072ff;
   position: absolute;
   top: 0;
 }

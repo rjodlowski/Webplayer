@@ -197,15 +197,35 @@ export default {
 #timeDisplay {
   width: 700px;
   height: 25px;
+  -webkit-appearance: none;
+  border-radius: 5px;
+  background: #282828;
+  outline: none;
+}
+
+#timeDisplay::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #0072ff;
+  cursor: pointer;
+}
+
+#timeDisplay::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #0072ff;
+  cursor: pointer;
 }
 .fa-arrow-right,
 .fa-arrow-left,
 .fa-play-circle,
-.fa-pause-circle {
-  color: white;
-}
+.fa-pause-circle,
 .fa-itunes-note {
-  color: red;
+  color: #a5a5a5;
 }
 #audio {
   display: none;
@@ -213,13 +233,14 @@ export default {
 #playlist {
   height: 50px;
   width: 150px;
-  background-color: yellow;
+  background-color: #240090;
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 15px;
+  left: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 15px;
 }
 #playlist:hover {
   cursor: pointer;
