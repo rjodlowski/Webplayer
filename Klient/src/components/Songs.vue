@@ -15,7 +15,7 @@
       <i class="fas fa-play fa-2x" v-if="showPlayInComp"></i>
       <i class="fas fa-pause fa-2x" v-if="showPauseInComp"></i>
     </div>
-    <div class="addSong">
+    <div class="addSong" @click="addSongToPlaylist">
       <i class="fas fa-plus fa-2x"></i>
     </div>
   </div>
@@ -108,6 +108,9 @@ export default {
     },
     comboFunction() {
       this.playAudio();
+    },
+    addSongToPlaylist() {
+      this.$emit("addSongToPlaylist", this.currAlbumName, this.currSong);
     },
   },
   data: function () {

@@ -27,6 +27,8 @@
             @songTimeUpdate="songTimeUpdate"
             @intervalSet="intervalSet"
             :intervalSet="getIfIntervalSet"
+            @addSongToPlaylist="addSongToPlaylist"
+            @displayPlaylist="displayPlaylist"
           ></songs>
         </div>
       </div>
@@ -48,6 +50,7 @@
         @playSongFromNow="playSongFromNow"
         @intervalSet="intervalSet"
         :intervalSet="getIfIntervalSet"
+        @displayPlaylist="displayPlaylist"
       ></player>
     </div>
   </div>
@@ -252,6 +255,17 @@ export default {
     },
     intervalSet: function () {
       this.$store.state.intervalSet = true;
+    },
+    // Playlist handling
+    addSongToPlaylist: function (currentAlbum, currentSongObj) {
+      // console.log("addSongToPlaylist", currentAlbum, currentSongObj);
+      this.$store.dispatch(
+        "addSongToPlaylist",
+        JSON.stringify({ album: currentAlbum, song: currentSongObj })
+      );
+    },
+    displayPlaylist: function () {
+      this.$store.dispatch("getPlaylist");
     },
   },
 };

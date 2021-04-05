@@ -24,6 +24,10 @@ const state = {
 	songDuration: null,
 	songCurrTime: null,
 	intervalSet: false,
+
+	// Playlist
+	playlistSongs: [],
+
 }
 
 const getters = {
@@ -42,9 +46,6 @@ const getters = {
 	getCurrentSong: function (state) {
 		return state.currentSong
 	},
-	// getPreviousSong: function (state) {
-	// 	return state.previousSong
-	// },
 	// Song changed
 	getNewSongLoaded: function (state) {
 		return state.songChanged;
@@ -56,7 +57,7 @@ const getters = {
 	getcurrSongDuration: function (state) {
 		return state.songDuration
 	},
-	getIfIntervalSet: function(state) {
+	getIfIntervalSet: function (state) {
 		return state.intervalSet
 	}
 }
@@ -74,9 +75,16 @@ const mutations = {
 	},
 	CHANGE_FILES(state, newData) {
 		state.dataFromServ.files = newData.files;
-		// console.log(state.currAlbum);
 		console.log("Podmieniono piosenki", state.dataFromServ);
 	},
+	SONG_TO_PLAYLIST(state, newData) {
+		state.playlistSongs.push(newData)
+		console.log("mutation", state.playlistSongs);
+	},
+	SAVE_PLAYLIST(state, newData) {
+		state.playlistSongs = newData
+		console.log("Data addded mutation", state.playlistSongs);
+	}
 }
 
 // Actions
@@ -93,6 +101,19 @@ const actions = {
 				commit("CHANGE_FILES", response.data)
 			})
 	},
+	// Handling playlist actions
+	addSongToPlaylist({ commit }, songData) {
+		axios.post("http://localhost:3000/playlist", JSON.stringify({ action: "ADD_SONG", songData: songData }))
+			.then(response => {
+				commit("SONG_TO_PLAYLIST", response.data)
+			})
+	},
+	getPlaylist({ commit }) {
+		axios.post("http://localhost:3000/playlist", JSON.stringify({ action: "GET_PLAYLIST" }))
+			.then(response => {
+				commit("SAVE_PLAYLIST", response.data)
+			})
+	}
 }
 
 // Export store

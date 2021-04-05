@@ -20,7 +20,7 @@
         }}
       </div>
     </div>
-    <div id="playlist">
+    <div id="playlist" @click="showMePlaylist">
       <i class="fab fa-itunes-note fa-2x"></i>
     </div>
     <div id="playerBtns">
@@ -131,6 +131,9 @@ export default {
       let storedTime = event.target.value;
       document.getElementById("audio").currentTime = storedTime;
       this.$emit("playSongFromNow", storedTime);
+    },
+    showMePlaylist: function () {
+      this.$emit("displayPlaylist");
     },
   },
   data: function () {

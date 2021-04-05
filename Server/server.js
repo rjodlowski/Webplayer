@@ -2,14 +2,13 @@ const PORT = 3000;
 const path = require("path");
 const http = require("http")
 const fs = require("fs")
+const DataStore = require("nedb")
 const qs = require("querystring");
 
-
-// fs.readFile(imgPath, function (error, data) {
-// 	res.writeHead(200, { "Content-Type": 'text/html; charset=utf-8' });
-// 	res.write(data)
-// 	res.end();
-// })
+var playlistDB = new DataStore({
+	filename: "playlist.db",
+	autoload: true,
+})
 
 const server = http.createServer(function (req, res) {
 	// console.log(req.method);
@@ -141,13 +140,65 @@ function handlePost(req, res) {
 				res.end(JSON.stringify(servRes, null, 4));
 			});
 
+		} else if (finish.action == "ADD_SONG") {
+			res.writeHead(200, { "content-type": "application/json", "Access-Control-Allow-Origin": "*" })
+
+			// Prepare a song object to add to the playlist db
+			let songsToSendBack = null;
+			let songDataParsed = JSON.parse(finish.songData)
+			songDataParsed.song.album = songDataParsed.album
+			let songToAdd = songDataParsed.song
+
+			// Delete all songs from playlist db
+			// playlistDB.remove({}, { multi: true }, function (err, numRemoved) {
+			// 	if (err) {
+			// 		console.log(err);
+			// 	} else {
+			// 		console.log("Usunięto dokumenty: ", numRemoved);
+			// 	}
+			// })
+
+
+			// Insert the song object into db
+			playlistDB.insert(songToAdd, function (err, newDoc) {
+				if (err) {
+					console.log(err);
+				} else {
+					console.log("Pomyślnie dodano piosenkę do bazy")
+					songsToSendBack = newDoc
+				}
+			})
+
+			// Log all db elements
+			// playlistDB.find({}, function (err, docs) {
+			// 	if (err) {
+			// 		console.log(err);
+			// 	} else {
+			// 		console.log("Obiekty z bazy danych:");
+			// 		// console.log(JSON.stringify({ "docsy": docs }, null, 5));
+			// 		console.log(docs);
+			// 	}
+			// })
+
+			res.end(JSON.stringify(songToAdd))
+		} else if (finish.action == "GET_PLAYLIST") {
+			res.writeHead(200, { "content-type": "application/json", "Access-Control-Allow-Origin": "*" })
+
+			// Get all db elements (list of objects)
+			playlistDB.find({}, function (err, docs) {
+				if (err) {
+					console.log(err);
+				} else {
+					res.end(JSON.stringify(docs))
+				}
+			})
 		} else {
 			console.log("inny adres");
 		}
 	})
-
-
 }
+
+
 
 server.listen(PORT, function () {
 	console.log("start serwera na porcie " + PORT)
