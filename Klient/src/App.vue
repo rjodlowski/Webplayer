@@ -158,11 +158,6 @@ export default {
           break;
         }
       }
-      console.log(
-        "Set $store.state.currentSong: ",
-        this.$store.state.currentSong
-      );
-
       this.$store.state.currSong = newSongName;
       this.cleanUpSongSelection();
     },
@@ -177,8 +172,6 @@ export default {
             this.$store.state.currentSong.element.children[1].innerText +
             ".mp3";
 
-          // clear song progress display
-
           // Set following song
           if (forwardsdOrBackwards == "forwards") {
             followingSong = this.$store.state.dataFromServ.files[
@@ -189,10 +182,9 @@ export default {
           }
 
           if (curSong != followingSong) {
-            // console.log("Songs are different, can switch");
+            // Clear song progress display
             document.getElementById("audio").value = 0;
             this.$store.state.songCurrTime = 0;
-            // this.$store.state.songDuration = 0;
 
             // Get the index of a current song
             let currentSongIndex = null;
@@ -218,13 +210,10 @@ export default {
               state.songChanged = false;
             }
 
-            console.log("The following song: ", state.currentSong.element);
-
             state.currSong =
               state.currentSong.element.children[1].innerText + ".mp3";
 
             // Play audio
-
             ///// Start playing next one if play button was hit
             let songCurerntlPlaying = this.getSongPlayingState;
             if (songCurerntlPlaying) {
@@ -235,11 +224,9 @@ export default {
             this.cleanUpSongSelection();
 
             // Change current song display
-          } else {
-            console.log("Can't switch!");
           }
         } else {
-          console.log("choose a song");
+          alert("Wybierz piosenkę!");
         }
       } else {
         if (this.$store.state.currSong != "Song name      ") {
@@ -260,11 +247,9 @@ export default {
           }
 
           if (curSong != followingSong) {
-            // console.log("Songs are different, can switch");
-            // clear song progress display
+            // Clear song progress display
             document.getElementById("audio").value = 0;
             this.$store.state.songCurrTime = 0;
-            // this.$store.state.songDuration = 0;
 
             // Get the index of a current song
             let currentSongIndex = null;
@@ -296,13 +281,10 @@ export default {
               state.songChanged = false;
             }
 
-            console.log("The following song: ", state.currentSong.element);
-
             state.currSong =
               state.currentSong.element.children[1].innerText + ".mp3";
 
             // Play audio
-
             ///// Start playing next one if play button was hit
             let songCurerntlPlaying = this.getSongPlayingState;
             if (songCurerntlPlaying) {
@@ -313,11 +295,9 @@ export default {
             this.cleanUpSongSelection();
 
             // Change current song display
-          } else {
-            console.log("Can't switch!");
           }
         } else {
-          console.log("choose a song");
+          alert("Wybierz piosenkę!");
         }
       }
     },
@@ -366,7 +346,6 @@ export default {
     },
     // Playlist handling
     addSongToPlaylist: function (currentAlbum, currentSongObj) {
-      // console.log("addSongToPlaylist", currentAlbum, currentSongObj);
       this.$store.dispatch(
         "addSongToPlaylist",
         JSON.stringify({ album: currentAlbum, song: currentSongObj })

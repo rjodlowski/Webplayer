@@ -4,18 +4,15 @@ import Vuex from "vuex"
 
 Vue.use(Vuex)
 
-// State
 const state = {
-	dataFromServ: {},
-	currAlbum: "",
-
 	currentSong: {
 		songName: "",
 		albumName: "",
 		element: "",
 		first: true,
 	},
-
+	currAlbum: "",
+	dataFromServ: {},
 	currSong: "Song name      ",
 	songPlaying: false,
 	songChanged: true,
@@ -27,7 +24,6 @@ const state = {
 
 	// Playlist
 	playlistSongs: [],
-
 }
 
 const getters = {
@@ -70,37 +66,18 @@ const getters = {
 const mutations = {
 	STORE_DATA_FROM_SERV(state, newData) {
 		state.dataFromServ = newData
-		// console.log(newData.albums);
 		state.currAlbum = newData.albums[0]
-		// console.log(state.currAlbum);
-		console.log("First fetch result object: ", state.dataFromServ);
-
-		// state.currSong = newData.files[0].name
 	},
 	CHANGE_FILES(state, newData) {
 		state.dataFromServ.files = newData.files;
-		console.log("Podmieniono piosenki", state.dataFromServ);
 	},
 	SONG_TO_PLAYLIST(state, newData) {
-		console.log("songToPlaylist", state.playlistSongs, newData);
-		// let canAddsong = true
-		// for (let i = 0; i < state.playlistSongs.length; i++) {
-		// 	console.log("for", state.playlistSongs[i]);
-		// 	if (state.playlistSongs[i].name == newData.name) {
-		// 		canAddsong = false
-		// 		break;
-		// 	}
-		// }
-		// if (canAddsong) {
-		// }
 		if (!newData.duplicate) {
 			state.playlistSongs.push(newData.song)
 		}
-		console.log("mutation", state.playlistSongs);
 	},
 	SAVE_PLAYLIST(state, newData) {
 		state.playlistSongs = newData
-		console.log("Data addded mutation", state.playlistSongs);
 	}
 }
 

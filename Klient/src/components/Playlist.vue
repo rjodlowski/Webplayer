@@ -30,9 +30,6 @@ export default {
   ],
   watch: {
     songPlayingState: function () {
-      // console.log(`Prop changed from: ${oldVal} to: ${newVal}`);
-      // if (this.$el.attributes[0] != this.currentSong.element.attributes[0]) {
-      //   }
       if (this.showPauseInComp) {
         this.chgBtnDisplay();
       }
@@ -55,9 +52,6 @@ export default {
       if (this.$el.style.backdropFilter == "") {
         this.$el.style.backdropFilter = "brightness(80%)";
       }
-      // console.log(
-      //   `U clicked a song ${this.currSong.name} in an album ${this.currAlbumName} `
-      // );
       this.$emit("setCurrSong", this.currSong.name);
     },
     markSongClicked: function () {
@@ -70,9 +64,6 @@ export default {
     },
     playAudio: function () {
       let audio = document.getElementById("audio");
-      console.log("PlayAudio", this.currentSong.element);
-      console.log(this.currentSong.element != this.$el);
-      console.log(this.$el);
       if (
         this.currentSong.element != this.$el ||
         (this.currentSong.first && this.newSong)
@@ -169,15 +160,11 @@ export default {
   height: 50px;
   width: 50px;
   display: none;
-  /* opacity: 0; */
+  opacity: 0;
   transition: opacity 0.5s;
-
-  /* background-color: red; */
 }
 .playSong > i {
-  /* display: none; */
-  display: flex;
-  /* background-color: green; */
+  display: none;
 }
 .fa-play,
 .fa-pause {

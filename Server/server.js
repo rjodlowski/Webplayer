@@ -1,25 +1,17 @@
 const PORT = 3000;
-const path = require("path");
 const http = require("http")
 const fs = require("fs")
 const DataStore = require("nedb")
-const qs = require("querystring");
 
 var playlistDB = new DataStore({
 	filename: "playlist.db",
 	autoload: true,
 })
 
-
-
 const server = http.createServer(function (req, res) {
-	// console.log(req.method);
-
 	switch (req.method) {
 		case "GET":
-			// console.log(req.url);
 			if (req.url == "/") {
-				// console.log(req.url);
 			} else if (req.url.startsWith("/albums/")) {
 				var path = decodeURIComponent(req.url)
 				if (req.url.endsWith(".jpg")) {
@@ -33,7 +25,6 @@ const server = http.createServer(function (req, res) {
 						}
 					})
 				} else if (req.url.endsWith(".mp3")) {
-					console.log("GET .mp3");
 					var stats = fs.statSync("./static" + path)
 					fs.readFile("./static" + path, function (error, data) {
 						if (error) {
@@ -53,7 +44,6 @@ const server = http.createServer(function (req, res) {
 			break;
 		case "POST":
 			handlePost(req, res)
-
 			break;
 	}
 })
@@ -62,17 +52,14 @@ function handlePost(req, res) {
 	var allData = "";
 
 	req.on("data", function (data) {
-		console.log("data: " + data)
 		allData += data;
 	})
 
 	req.on("end", function () {
 		var finish = JSON.parse(allData);
-		// console.log(finish);
 
 		if (finish.action == "FIRST") {
 			res.writeHead(200, { "content-type": "application/json", "Access-Control-Allow-Origin": "*" })
-			// servRes, first - nazwy katalogów i piosenki z pierwszego albumu
 			var servRes = {
 				info: "first",
 				albums: [],
@@ -94,10 +81,7 @@ function handlePost(req, res) {
 						return console.log(err)
 					} else {
 						for (let fileIndex = 0; fileIndex < files.length; fileIndex++) {
-							if (files[fileIndex].substr(files[fileIndex].length - 4) == ".jpg") {
-								// It's a cover
-								// console.log("It's a cover!");
-							} else {
+							if (files[fileIndex].substr(files[fileIndex].length - 4) != ".jpg") {
 								let statsSize = fs.statSync(__dirname + "/static/albums/" + servRes.albums[0] + "/" + files[fileIndex]).size;
 								let fileInfo = {
 									name: files[fileIndex],
@@ -107,14 +91,12 @@ function handlePost(req, res) {
 							}
 						}
 					}
-					// console.log(servRes);
 					res.end(JSON.stringify(servRes, null, 4));
 				})
 			})
 		} else if (finish.action == "NEXT") {
 			// Send back a list of songs from an album
 			res.writeHead(200, { "content-type": "application/json", "Access-Control-Allow-Origin": "*" })
-			// servRes, next - piosenki z danego albumu
 			var servRes = {
 				info: "next",
 				files: [],
@@ -125,10 +107,7 @@ function handlePost(req, res) {
 					return console.log(err)
 				} else {
 					for (let fileIndex = 0; fileIndex < files.length; fileIndex++) {
-						if (files[fileIndex].substr(files[fileIndex].length - 4) == ".jpg") {
-							// It's a cover
-							// console.log("It's a cover!");
-						} else {
+						if (files[fileIndex].substr(files[fileIndex].length - 4) != ".jpg") {
 							let statsSize = fs.statSync(__dirname + "/static/albums/" + finish.albumName + "/" + files[fileIndex]).size;
 							let fileInfo = {
 								name: files[fileIndex],
@@ -138,7 +117,6 @@ function handlePost(req, res) {
 						}
 					}
 				}
-				// console.log(servRes);
 				res.end(JSON.stringify(servRes, null, 4));
 			});
 
@@ -146,7 +124,6 @@ function handlePost(req, res) {
 			res.writeHead(200, { "content-type": "application/json", "Access-Control-Allow-Origin": "*" })
 
 			// Prepare a song object to add to the playlist db
-			let songsToSendBack = null;
 			let songDataParsed = JSON.parse(finish.songData)
 			songDataParsed.song.album = songDataParsed.album
 			let songToAdd = songDataParsed.song
@@ -167,51 +144,26 @@ function handlePost(req, res) {
 				if (err) {
 					console.log(err);
 				} else {
-					// console.log("Obiekty z bazy danych:");
-					// console.log(JSON.stringify({ "docsy": docs }, null, 5));
-					// console.log(docs);
-					console.log("docs", docs);
 					currDbState = docs
 
-					console.log("db state: ", currDbState);
 					for (let i = 0; i < currDbState.length; i++) {
 						if (currDbState[i].name == songToAdd.name) {
 							theresDuplicate = true
-							break
+							break;
 						}
 					}
-
 
 					if (!theresDuplicate) {
 						// Insert the song object into db
 						playlistDB.insert(songToAdd, function (err) {
 							if (err) {
 								console.log(err);
-							} else {
-								console.log("Pomyślnie dodano piosenkę do bazy")
 							}
 						})
-					} else {
-						console.log("Duplicate song found");
 					}
 					res.end(JSON.stringify({ song: songToAdd, duplicate: theresDuplicate }))
-
 				}
 			})
-
-
-
-			// Log all db elements
-			// playlistDB.find({}, function (err, docs) {
-			// 	if (err) {
-			// 		console.log(err);
-			// 	} else {
-			// 		console.log("Obiekty z bazy danych:");
-			// 		// console.log(JSON.stringify({ "docsy": docs }, null, 5));
-			// 		console.log(docs);
-			// 	}
-			// })
-
 		} else if (finish.action == "GET_PLAYLIST") {
 			res.writeHead(200, { "content-type": "application/json", "Access-Control-Allow-Origin": "*" })
 
@@ -223,14 +175,10 @@ function handlePost(req, res) {
 					res.end(JSON.stringify(docs))
 				}
 			})
-		} else {
-			console.log("inny adres");
 		}
 	})
 }
 
-
-
 server.listen(PORT, function () {
-	console.log("start serwera na porcie " + PORT)
+	console.log("Server running on port " + PORT)
 })

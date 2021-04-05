@@ -66,9 +66,6 @@ export default {
     "songDuration",
     "intervalSet",
   ],
-  // updated() {
-  //   console.log(this.songPlayingState);
-  // },
   watch: {
     songPlayingState: function () {
       this.chgBtnDisplay();
@@ -83,7 +80,6 @@ export default {
         this.showPlayInComp = true;
         this.showPauseInComp = false;
       }
-      // this.$emit("changePlayBtn");
     },
     playAudio: function () {
       let audio = document.getElementById("audio");
@@ -115,16 +111,13 @@ export default {
           this.chgBtnDisplay();
         }, 50);
       } else {
-        console.log("Wybierz utwór!!");
+        alert("Wybierz utwór!");
       }
     },
     previousClicked: function () {
-      console.log("Go to previous song");
-
       this.$emit("previousSong");
     },
     followingClicked: function () {
-      console.log("Go to next song");
       this.$emit("nextSong");
     },
     playSongFromNowComp: function (event) {
@@ -173,13 +166,11 @@ export default {
 .arrows {
   width: 100px;
   height: 100px;
-  background-color: red;
   cursor: pointer;
 }
 #playSong {
   width: 150px;
   height: 150px;
-  background-color: red;
   cursor: pointer;
 }
 #songName {
@@ -201,7 +192,6 @@ export default {
   height: 50px;
   width: 190px;
   text-align: center;
-  background-color: red;
   font-size: 45px;
 }
 #timeDisplay {

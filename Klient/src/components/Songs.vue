@@ -56,9 +56,6 @@ export default {
       if (this.$el.style.backdropFilter == "") {
         this.$el.style.backdropFilter = "brightness(80%)";
       }
-      // console.log(
-      //   `U clicked a song ${this.currSong.name} in an album ${this.currAlbumName} `
-      // );
       this.$emit("setCurrSong", this.currSong.name);
     },
     markSongClicked: function () {
@@ -107,6 +104,7 @@ export default {
       this.playAudio();
     },
     addSongToPlaylist() {
+      alert("Dodano piosenkę do playlisty! ");
       this.$emit("addSongToPlaylist", this.currAlbumName, this.currSong);
     },
   },
@@ -145,7 +143,14 @@ export default {
   display: flex;
   opacity: 1;
 }
+.song:hover > .addSong {
+  display: flex;
+  opacity: 1;
+}
 .song:hover > .playSong > i {
+  display: flex;
+}
+.song:hover > .addSong > i {
   display: flex;
 }
 .songAlbum {
@@ -166,16 +171,12 @@ export default {
   height: 50px;
   width: 50px;
   display: none;
-  /* opacity: 0; */
+  opacity: 0;
   transition: opacity 0.5s;
-
-  /* background-color: red; */
 }
 .playSong > i,
 .addSong > i {
-  /* display: none; */
-  display: flex;
-  /* background-color: green; */
+  display: none;
 }
 .fa-play,
 .fa-pause,

@@ -28,12 +28,10 @@ export default {
 #main > img {
   width: 100%;
   height: 140px;
-  /* outline: 1px solid yellow; */
   cursor: pointer;
 }
 .albumCover {
   width: 150px;
   height: 150px;
-  background-color: red;
 }
 </style>
